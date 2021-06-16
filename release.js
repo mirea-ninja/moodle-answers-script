@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mirea Ninja Answers
 // @namespace    https://mirea.ninja/
-// @version      1.1.4
+// @version      1.1.5
 // @description  online test answers!
 // @author       admin
 // @match        *://*/*
@@ -19,8 +19,6 @@
 (function () {
     'use strict';
 
-    var socket = io.connect('https://mirea.ninja:5000/')
-
     // секретный visitorId пользователя
     var USER_INFO = undefined;
 
@@ -34,6 +32,8 @@
         });
 
     var main = function () {
+        var socket = io.connect('https://mirea.ninja:5000/')
+
         if (!$(".que").length) return;
         if (document.body.classList.contains("quiz-secure-window")) {
             window.addEventListener("mousedown", function (event) { event.stopPropagation(); }, true);
@@ -198,7 +198,7 @@
         function createChat() {
             const chatInnerHTML = `
                     <input type="checkbox" id="chat-button" aria-hidden="true">
-                    <nav class="chat-nav">
+                    <div class="chat-nav">
                         <label for="chat-button" class="chat-button" onclick></label>
                         <section>
                             <div id="chat-messages" style="max-height: 700px; overflow-y: scroll; padding-right: 10px;">
@@ -210,9 +210,10 @@
                                 </svg>
                             </div>
                         </section>
-                    </nav>
+                    </div>
                 `;
-            document.body.innerHTML = chatInnerHTML + document.body.innerHTML;
+
+            $('body').append(chatInnerHTML);
             GM_addStyle(`
                     .chat-nav {
                         width: 485px;
