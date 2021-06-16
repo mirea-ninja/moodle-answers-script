@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mirea Ninja Answers
 // @namespace    https://mirea.ninja/
-// @version      1.1.3
+// @version      1.1.4
 // @description  online test answers!
 // @author       admin
 // @match        *://*/*
@@ -11,13 +11,15 @@
 // @require      https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js
-// @require      https://cdn.socket.io/3.1.3/socket.io.min.js
+// @require      https://cdn.socket.io/4.1.2/socket.io.min.js
 // @grant        GM_addStyle
 // @run-at       document-start
 // ==/UserScript==
 
 (function () {
     'use strict';
+
+    var socket = io.connect('https://mirea.ninja:5000/')
 
     // секретный visitorId пользователя
     var USER_INFO = undefined;
@@ -28,7 +30,7 @@
         .then(result => {
             USER_INFO = result.visitorId;
 
-            $(window).on('load', main());
+            $(window).on('ready', main());
         });
 
     var main = function () {
@@ -51,20 +53,19 @@
         const QUESTIONS_TYPE = getQuestionsType();
         const QUESTIONS_TEXT = getQuestionsText();
         // в качестве названия комнаты будем использовать первый вопрос
-        const room = CryptoJS.SHA256(QUESTIONS_TEXT[0]).toString();
-        createChat();
-
-        var socket = io.connect('https://mirea.ninja:5000/')
+        const ROOM = CryptoJS.SHA256(QUESTIONS_TEXT[0]).toString();
 
         socket.on('connect', () => {
-            socket.emit('join', room);
+            socket.emit('join', ROOM);
 
             // отправка запроса для счётчика просмотров и создания нового вопроса
-            socket.emit('view_question', { 'data': { 'questions': QUESTIONS_TEXT, 'user_info': USER_INFO, 'room': room } });
+            socket.emit('view_question', { 'data': { 'questions': QUESTIONS_TEXT, 'user_info': USER_INFO, 'room': ROOM } });
             // получаем сообщения чата
-            socket.emit('get_chat', room);
+            socket.emit('get_chat', ROOM);
             // отправляем текущие ответы на сервер
             updateAnswersOnDocumentReady();
+            // создаём окно чата
+            createChat();
         })
 
         // событие вызывается при обновлении счётчика просмотров у вопроса
@@ -150,10 +151,10 @@
                 answer = answer[0];
             }
             if (el.text() == '✔') {
-                socket.emit('add_approve', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'is_correct': true, 'answer': answer, 'room': room });
+                socket.emit('add_approve', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'is_correct': true, 'answer': answer, 'room': ROOM });
             }
             else if (el.text() == '❌') {
-                socket.emit('add_approve', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'is_correct': false, 'answer': answer, 'room': room });
+                socket.emit('add_approve', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'is_correct': false, 'answer': answer, 'room': ROOM });
             }
         }
 
@@ -166,12 +167,12 @@
                     let answer = getAnswer($(inputElements[j]), i);
                     if (QUESTIONS_TYPE[i] == 'numerical' || QUESTIONS_TYPE[i] == 'shortanswer' || QUESTIONS_TYPE[i] == 'multichoice_checkbox') {
                         console.log('Ответ отправлен: ', QUESTIONS_TYPE[i], answer);
-                        socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[i], 'question_type': QUESTIONS_TYPE[i], 'answer': answer, 'room': room });
+                        socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[i], 'question_type': QUESTIONS_TYPE[i], 'answer': answer, 'room': ROOM });
                     }
                     else if (QUESTIONS_TYPE[i] == 'multichoice' || QUESTIONS_TYPE[i] == 'truefalse') {
                         if (answer[1] == true) {
                             console.log('Ответ отправлен: ', QUESTIONS_TYPE[i], answer[0]);
-                            socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[i], 'question_type': QUESTIONS_TYPE[i], 'answer': answer[0], 'room': room });
+                            socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[i], 'question_type': QUESTIONS_TYPE[i], 'answer': answer[0], 'room': ROOM });
                         }
                     }
                 }
@@ -372,7 +373,7 @@
                     if (userName == undefined) {
                         userName = 'Аноним';
                     }
-                    socket.emit('chat', { 'room': room, 'message': { 'user': userName, 'user_info': USER_INFO, 'text': message } });
+                    socket.emit('chat', { 'room': ROOM, 'message': { 'user': userName, 'user_info': USER_INFO, 'text': message } });
                 }
                 $('#chat-input').val('');
             });
@@ -618,7 +619,7 @@
                 answerData = answerData[0]
             }
             console.log('Ответ отправлен: ', QUESTIONS_TYPE[questionIndex], answerData);
-            socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'question_type': QUESTIONS_TYPE[questionIndex], 'answer': answerData, 'room': room });
+            socket.emit('add_answer', { 'user_info': USER_INFO, 'question': QUESTIONS_TEXT[questionIndex], 'question_type': QUESTIONS_TYPE[questionIndex], 'answer': answerData, 'room': ROOM });
         }
     } // main function end
 })(); // tampermonkey main function end
