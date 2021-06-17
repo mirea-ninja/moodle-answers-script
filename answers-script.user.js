@@ -37,4 +37,16 @@
 
     }
 
+    let user = new User();
+
+    document.addEventListener("DOMContentLoaded", OnDOMReady);
+
+    function OnDOMReady() {
+
+        FingerprintJS.load()
+            .then(fp => fp.get())
+            .then(result => {
+                user.UserId = result.visitorId;
+            });
+    }
 })(); // tampermonkey main function end
