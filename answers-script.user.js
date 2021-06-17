@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mirea Ninja Answers
 // @namespace    https://mirea.ninja/
-// @version      1.1.5
+// @version      1.1.5.1
 // @description  online test answers!
 // @author       admin
 // @match        *://*/*
