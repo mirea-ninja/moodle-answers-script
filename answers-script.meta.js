@@ -5,8 +5,8 @@
 // @description  online test answers!
 // @author       admin
 // @match        *://*/*
-// @updateURL    https://raw.githubusercontent.com/Ninja-Official/answers-script/main/release.js
-// @downloadURL  https://raw.githubusercontent.com/Ninja-Official/answers-script/main/release.js
+// @updateURL    https://raw.githubusercontent.com/SyntOwl/answers-script/main/answers-script.meta.js
+// @downloadURL  https://raw.githubusercontent.com/SyntOwl/answers-script/main/answers-script.user.js
 // @supportURL   https://mirea.ninja/t/novaya-versiya-skripta-dlya-obmena-otvetami-v-testirovaniya-v-sdo/486
 // @require      https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
