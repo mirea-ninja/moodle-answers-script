@@ -34,7 +34,14 @@
         set UserId(newId) {
             this._userId = newId;
         }
+    class Chat {
+        constructor() {
+        }
 
+        CreateChat() {
+
+        };
+    }
     }
 
     let user = new User();
