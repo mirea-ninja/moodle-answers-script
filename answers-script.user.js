@@ -41,12 +41,25 @@
 
     document.addEventListener("DOMContentLoaded", OnDOMReady);
 
+    function OnWindowLoad() {
+
+    }
+
     function OnDOMReady() {
 
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {
                 user.UserId = result.visitorId;
+                switch (document.readyState) {
+                    case 'loading':
+                    case 'interactive':
+                        window.addEventListener('load', OnWindowLoad);
+                        break;
+                    case 'complete':
+                        OnWindowLoad();
+                        break;
+                }
             });
     }
 })(); // tampermonkey main function end
