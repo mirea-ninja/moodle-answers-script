@@ -313,6 +313,7 @@
                         text: textMessage
                     }
                     if (_this.callBackSendMessage) {
+                        _this.InputTextBox.value = '';
                         _this.callBackSendMessage(message);
                     }
                 }
