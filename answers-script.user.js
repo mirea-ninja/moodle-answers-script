@@ -350,6 +350,19 @@
         }
     }
 
+    class Client {
+        /**
+         * @param {string}url
+         * @param {User}user
+         * @param {string}room
+         */
+        constructor(url, user, room) {
+            this._soccet = io(url);
+            this._user = user;
+            this._room = room;
+        }
+
+    }
         };
     }
     }
