@@ -50,6 +50,10 @@
          * @type {string}
          */
         _userId = undefined;
+
+        /**
+         * @return string
+         */
         get UserId() {
             if (!this._userId) {
                 console.error('User Id not set.');
