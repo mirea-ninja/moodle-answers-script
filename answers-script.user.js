@@ -730,11 +730,29 @@
 
         return questions;
     }
+
+    function IsProtectedPage() {
+        return document.body.classList.contains("quiz-secure-window");
+    }
+
+    function DisableProtectedPageRestrictions() {
+        window.addEventListener("mousedown", event => event.stopPropagation(), true);
+        window.addEventListener("dragstart", event => event.stopPropagation(), true);
+        window.addEventListener("contextmenu", event => event.stopPropagation(), true);
+        window.addEventListener('copy', event => event.stopPropagation(), true);
+        window.addEventListener('beforeprint', event => event.stopPropagation(), true);
+    }
+
+
     let user = new User();
 
     document.addEventListener("DOMContentLoaded", OnDOMReady);
 
     function OnWindowLoad() {
+
+        if (IsProtectedPage()) {
+            DisableProtectedPageRestrictions();
+        }
 
     }
 
