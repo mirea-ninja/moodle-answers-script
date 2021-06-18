@@ -443,6 +443,10 @@
             }
         }
 
+        /**
+         * @param {{viewers: string[], question: string, answers: string[]}} data
+         * @constructor
+         */
         UpdateAnswersInformation(data) {
             /**
              * @type {Question[]}
