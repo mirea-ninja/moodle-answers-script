@@ -389,7 +389,14 @@
         }
 
         SendChatMessage(message) {
-            this._soccet.emit(message);
+            this._soccet.emit('chat', {
+                'room': this._room,
+                'message': {
+                    'user': message.user,
+                    'user_info': message.userInfo,
+                    'text': message.text
+                }
+            });
         }
 
         /**
