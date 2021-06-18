@@ -274,6 +274,27 @@
         set User(user) {
             this._user = user;
         }
+
+        /**
+         * @return {HTMLOrSVGImageElement}
+         */
+        get SendButtonElement() {
+            return this._domChatBlock.querySelector('#send-chat-message-icon');
+        }
+
+        /**
+         * @return {HTMLTextAreaElement}
+         */
+        get InputTextBox() {
+            return this._domChatBlock.querySelector('#chat-input');
+        }
+
+        /**
+         * @return {HTMLDivElement}
+         */
+        get ChatMessages() {
+            return this._domChatBlock.querySelector('#chat-messages');
+        }
         }
 
         CreateChat() {
