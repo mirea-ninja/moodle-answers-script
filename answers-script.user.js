@@ -372,7 +372,7 @@
         callBackNewMessageReceived;
 
         constructor(url, user, room) {
-            this._soccet = io(url);
+            this._socket = io(url);
             this._user = user;
             this._room = room;
         }
@@ -381,15 +381,15 @@
          * @param {Question[]}questions
          */
         RegisterConnectListener(questions) {
-            this._soccet.on('connect', () => {
-                this._soccet.emit('join', this._room);
+            this._socket.on('connect', () => {
+                this._socket.emit('join', this._room);
 
                 let textQuestions = [];
                 for (const question of questions) {
                     textQuestions.push(question.TextQuestion);
                 }
                 // отправка запроса для счётчика просмотров и создания нового вопроса
-                this._soccet.emit('view_question', {
+                this._socket.emit('view_question', {
                     'data': {
                         'questions': textQuestions,
                         'user_info': user.UserId,
@@ -397,7 +397,7 @@
                     }
                 });
                 // получаем сообщения чата
-                this._soccet.emit('get_chat', this._room);
+                this._socket.emit('get_chat', this._room);
                 // отправляем текущие ответы на сервер
                 this.UpdateAnswersOnDocumentReady(questions);
             });
@@ -406,13 +406,14 @@
 
         RegisterAddChatMessagesListener(question) {
             // событие вызывается при получении нового сообщения в чате
-            this._soccet.on('add_chat_messages', (messages) => {
+
+            this._socket.on('add_chat_messages', (messages) => {
                 this.callBackNewMessageReceived(messages);
             });
         }
 
         SendChatMessage(message) {
-            this._soccet.emit('chat', {
+            this._socket.emit('chat', {
                 'room': this._room,
                 'message': {
                     'user': message.user,
@@ -431,7 +432,7 @@
                 const type = question.Type;
                 const answers = question.Answers;
                 for (const answer of answers) {
-                    this._soccet.emit('add_answer', {
+                    this._socket.emit('add_answer', {
                         'user_info': this._user.UserId,
                         'question': text,
                         'question_type': type,
