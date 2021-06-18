@@ -631,6 +631,25 @@
         }
     }
 
+
+    /**
+     * @extends Question
+     */
+    class NumericalQuestion extends Question {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._type = 'numerical';
+        }
+
+        get Answers() {
+            let answer = this._domAnswerBlock.querySelector('input').value.trim();
+            return [answer];
+        }
     }
     }
 
