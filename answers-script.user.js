@@ -249,6 +249,31 @@
                     .another-chat-message{
                         float:left;
                     }`
+
+        /**
+         * @protected
+         * @type HTMLDivElement
+         */
+        _domChatBlock;
+
+        /**
+         * @private
+         * @type User
+         */
+        _user;
+        /**
+         * @public
+         * @callback
+            * @param {{userInfo: string, text: string, user: string}} message
+         */
+        callBackSendMessage;
+
+        /**
+         * @param {User}user
+         */
+        set User(user) {
+            this._user = user;
+        }
         }
 
         CreateChat() {
