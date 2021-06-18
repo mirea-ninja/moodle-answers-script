@@ -387,6 +387,26 @@
         SendChatMessage(message) {
             this._soccet.emit(message);
         }
+
+        /**
+         * @param {Question[]}questions
+         */
+        UpdateAnswersOnDocumentReady(questions) {
+            for (const question of questions) {
+                const text = question.TextQuestion;
+                const type = question.Type;
+                const answers = question.Answers;
+                for (const answer of answers) {
+                    this._soccet.emit('add_answer', {
+                        'user_info': this._user.UserId,
+                        'question': text,
+                        'question_type': type,
+                        'answer': answer,
+                        'room': this._room
+                    })
+                }
+            }
+        }
     }
         };
     }
