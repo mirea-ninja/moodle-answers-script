@@ -72,7 +72,6 @@
     }
 
     class Chat {
-        constructor() {
 
         /**
          * @private
