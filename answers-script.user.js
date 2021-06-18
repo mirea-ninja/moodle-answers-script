@@ -360,6 +360,14 @@
          * @param {User}user
          * @param {string}room
          */
+
+        /**
+         * @public
+         * @callback
+            * @param {[{userInfo: string, text: string, user: string}]} messages
+         */
+        callBackNewMessageReceived;
+
         constructor(url, user, room) {
             this._soccet = io(url);
             this._user = user;
@@ -778,6 +786,17 @@
         const room = CryptoJS.SHA256(questions[0].TextQuestion).toString();
         client = new Client(SERVER_URL, user, room);
 
+        client.RegisterConnectListener(questions);
+        client.callBackNewMessageReceived = (message) => {
+            chat.AddChatMessage(message)
+        };
+        chat.callBackSendMessage = (message) => {
+            client.SendChatMessage(message)
+        };
+        client.RegisterAddChatMessagesListener();
+        for (const question of questions) {
+            console.log(question.Answers);
+        }
     }
 
     function OnDOMReady() {
