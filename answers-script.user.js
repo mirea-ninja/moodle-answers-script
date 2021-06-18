@@ -573,6 +573,35 @@
         }
     }
 
+    /**
+     * @extends Question
+     */
+    class TrueFalseQuestion extends Question {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._type = 'truefalse';
+        }
+
+        get Answers() {
+            let answerCheckboxOptions = this._domAnswerBlock.querySelectorAll('input');
+            let answer;
+            for (const answerCheckboxOption of answerCheckboxOptions) {
+                if (answerCheckboxOption.checked) {
+                    answer = answerCheckboxOption
+                        .parentElement.querySelector('.ml-1')
+                        .textContent.trim();
+                    break;
+                }
+            }
+            return [answer];
+        }
+    }
+
     }
     }
 
