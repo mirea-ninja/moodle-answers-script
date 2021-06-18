@@ -429,6 +429,39 @@
 
     }
 
+    class Image {
+        /**
+         * @protected
+         * @type HTMLImageElement
+         */
+        _imgElement;
+
+        /**
+         * @param {HTMLImageElement} img
+         * @constructor
+         */
+        constructor(img) {
+            this._imgElement = img;
+        }
+
+        get CheckLoad() {
+            return this._imgElement.complete;
+        }
+
+        get Base64() {
+            if (!this.CheckLoad) {
+                console.error('Image not loaded, failed to get Base64.');
+                return '';
+            }
+            let canvas = document.createElement("canvas");
+            canvas.width = this._imgElement.width;
+            canvas.height = this._imgElement.height;
+            let ctx = canvas.getContext("2d");
+            ctx.drawImage(this._imgElement, 0, 0);
+            let dataURL = canvas.toDataURL("image/png");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
     }
         };
     }
