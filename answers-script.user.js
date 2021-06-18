@@ -673,8 +673,63 @@
         }
     }
 
+
+    /**
+     * @param {HTMLElement} questionBlock
+     * @return Question
+     * @constructor
+     */
+    function GetQuestion(questionBlock) {
+        let questionTypes = ['shortanswer', // вписать короткий ответ
+            'truefalse',    // вопрос на верно/неверно
+            'numerical',    // коротки ответ в виде числа
+            'multichoice',  // вопрос с множественными вариантами ответов
+            'match' // вопрос на соответствие
+        ];
+        let question = undefined;
+        const classList = questionBlock.classList;
+        for (const questionType of questionTypes) {
+            if (classList.contains(questionType)) {
+                const domQuestionBlock = questionBlock.querySelector('.qtext');
+                const domAnswerBlock = questionBlock.querySelector('.answer');
+                switch (questionType) {
+                    case 'shortanswer':
+                        question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
+                        break;
+                    case 'truefalse':
+                        question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
+                        break;
+                    case 'multichoice':
+                        question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                        break;
+                    case 'numerical':
+                        question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
+                        break;
+                    case 'match':
+                        question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
+                        break;
+                    default:
+                        console.error(questionType + ' - not implemented');
+                        break;
+                }
+                return question;
+            }
+        }
     }
 
+    function GetQuestions(selector, contextElement = document.body) {
+        let questions = [];
+        const questionsBlock = contextElement.querySelectorAll(selector);
+
+        for (let i = 0; i < questionsBlock.length; i++) {
+            let question = GetQuestion(questionsBlock[i]);
+            if (question) {
+                questions.push(question);
+            }
+        }
+
+        return questions;
+    }
     let user = new User();
 
     document.addEventListener("DOMContentLoaded", OnDOMReady);
