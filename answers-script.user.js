@@ -362,6 +362,27 @@
             this._room = room;
         }
 
+        /**
+         * @param {Question[]}questions
+         */
+        RegisterConnectListener(questions) {
+            this._soccet.on('connect', () => {
+                this._soccet.emit('join', this._room);
+
+                // отправка запроса для счётчика просмотров и создания нового вопроса
+                this._soccet.emit('view_question', {
+                    'data': {
+                        'questions': questions[0].TextQuestion,
+                        'user_info': user.UserId,
+                        'room': this._room
+                    }
+                });
+                // получаем сообщения чата
+                this._soccet.emit('get_chat', this._room);
+                // отправляем текущие ответы на сервер
+                this.UpdateAnswersOnDocumentReady(questions);
+            });
+        }
     }
         };
     }
