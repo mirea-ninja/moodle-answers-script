@@ -398,6 +398,14 @@
             });
         }
 
+
+        RegisterAddChatMessagesListener(question) {
+            // событие вызывается при получении нового сообщения в чате
+            this._soccet.on('add_chat_messages', (messages) => {
+                this.callBackNewMessageReceived(messages);
+            });
+        }
+
         SendChatMessage(message) {
             this._soccet.emit('chat', {
                 'room': this._room,
