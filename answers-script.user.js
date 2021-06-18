@@ -473,7 +473,85 @@
             return CryptoJS.SHA256(this.Base64).toString();
         }
     }
+
+    /**
+     * @abstract
+     */
+    class Question {
+
+        /**
+         * @protected
+         * @type HTMLDivElement
+         */
+        _domQuestionBlock;
+
+        /**
+         * @protected
+         * @type HTMLDivElement
+         */
+        _domAnswerBlock;
+
+        /**
+         * @protected
+         * @type string
+         */
+        _type;
+
+        /**
+         * @public
+         * @callback
+            * @param {{textQuestion: string, newAnswers: string[]}} questionInfo
+         */
+        callBackAnswerChange;
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            this._domQuestionBlock = domQuestionBlock;
+            this._domAnswerBlock = domAnswerBlock;
+        }
+
+        /**
+         * @return string
+         */
+        get Type() {
+            return this._type;
+        }
+
+        /**
+         * @return {string[]}
+         * @abstract
+         */
+        get Answers() {
+
         };
+
+        /**
+         * @return {string}
+         */
+        get TextQuestion() {
+            let text;
+            text = this._domQuestionBlock.innerText;
+
+            const imagesElements = this._domQuestionBlock.querySelectorAll('.qtext img');
+            for (const imageElement of imagesElements) {
+                let img = new Image(imageElement);
+                let imgHash = img.SHA256;
+                if (imgHash.length === 0) {
+                    console.error('Image not loaded, perhaps the question will not be identified correctly.');
+                }
+                text += " img:" + imgHash;
+            }
+
+            return text;
+        }
+
+        CreateHintDomBlock() {
+
+        }
+    }
     }
     }
 
