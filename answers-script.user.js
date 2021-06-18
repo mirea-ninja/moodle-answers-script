@@ -338,17 +338,18 @@
                 let messageHtml;
                 if (message['user_info'] !== this._user.UserId) {
                     messageHtml = `<div class="chat-message another-chat-message">
-                                    <p class="chat-message-user-type other-chat-message-type">${messages['user']}</p>
-                                    <p class="chat-message-text chat-message-text-other">${messages['text']}</p>
+                                    <p class="chat-message-user-type other-chat-message-type">${message['user']}</p>
+                                    <p class="chat-message-text chat-message-text-other">${message['text']}</p>
                                 </div>`;
                 } else {
                     messageHtml = `<div class="chat-message your-chat-message">
-                            <p class="chat-message-text chat-message-text-your">${messages['text']}</p>
+                            <p class="chat-message-text chat-message-text-your">${message['text']}</p>
                             <p class="chat-message-user-type your-chat-message-type your-chat-message">вы</p>
                         </div>`;
                 }
 
                 this.ChatMessages.insertAdjacentHTML('beforeend', messageHtml);
+
             }
         }
     }
