@@ -20,12 +20,9 @@
     'use strict';
 
     class User {
-        constructor() {
-            this._userId = undefined;
-        }
 
         get UserId() {
-            if (!this._userId){
+            if (!this._userId) {
                 console.error('User Id not set.');
             }
             return this._userId;
@@ -34,6 +31,8 @@
         set UserId(newId) {
             this._userId = newId;
         }
+    }
+
     class Chat {
         constructor() {
         }
