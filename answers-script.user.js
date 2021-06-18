@@ -568,7 +568,7 @@
          */
         get TextQuestion() {
             let text;
-            text = this._domQuestionBlock.innerText;
+            text = this._domQuestionBlock.textContent;
 
             const imagesElements = this._domQuestionBlock.querySelectorAll('.qtext img');
             for (const imageElement of imagesElements) {
