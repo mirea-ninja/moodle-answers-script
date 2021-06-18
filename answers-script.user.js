@@ -745,6 +745,16 @@
 
 
     let user = new User();
+    let chat = new Chat();
+    /**
+     * @type Client
+     */
+    let client
+
+    /**
+     * @type {Question[]}
+     */
+    let questions = [];
 
     document.addEventListener("DOMContentLoaded", OnDOMReady);
 
@@ -754,14 +764,21 @@
             DisableProtectedPageRestrictions();
         }
 
+        const room = CryptoJS.SHA256(questions[0].TextQuestion).toString();
+        client = new Client(SERVER_URL, user, room);
+
     }
 
     function OnDOMReady() {
+        questions = GetQuestions(QUESTIONS_SELECTOR);
+
+        chat.CreateChat();
 
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {
                 user.UserId = result.visitorId;
+                chat.User = user;
                 switch (document.readyState) {
                     case 'loading':
                     case 'interactive':
@@ -772,5 +789,7 @@
                         break;
                 }
             });
+
+
     }
 })(); // tampermonkey main function end
