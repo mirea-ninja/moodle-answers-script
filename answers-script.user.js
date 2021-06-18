@@ -384,10 +384,14 @@
             this._soccet.on('connect', () => {
                 this._soccet.emit('join', this._room);
 
+                let textQuestions = [];
+                for (const question of questions) {
+                    textQuestions.push(question.TextQuestion);
+                }
                 // отправка запроса для счётчика просмотров и создания нового вопроса
                 this._soccet.emit('view_question', {
                     'data': {
-                        'questions': questions[0].TextQuestion,
+                        'questions': textQuestions,
                         'user_info': user.UserId,
                         'room': this._room
                     }
