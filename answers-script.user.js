@@ -383,6 +383,10 @@
                 this.UpdateAnswersOnDocumentReady(questions);
             });
         }
+
+        SendChatMessage(message) {
+            this._soccet.emit(message);
+        }
     }
         };
     }
