@@ -351,6 +351,7 @@
                 this.ChatMessages.insertAdjacentHTML('beforeend', messageHtml);
 
             }
+            this.ChatMessages.scrollTo(0, this.ChatMessages.scrollHeight);
         }
     }
 
