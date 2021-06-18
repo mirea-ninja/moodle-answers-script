@@ -96,6 +96,159 @@
                     </div>
                 </div>
                 `;
+
+        /**
+         * @private
+         * @type {string}
+         * @const
+         */
+        _codeCSS = `.chat-nav {
+                        width: 485px;
+                        height: 800px;
+                        background: #EFEFEF;
+                        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+                        border-radius: 20px;
+                        position: fixed;
+                        padding: 0;
+                        top: 16.7%;
+                        margin-top: -99.7px;
+                        right: 0;
+                        background: #EFEFEF;;
+                        -webkit-transform: translateX(100%);
+                        -moz-transform: translateX(100%);
+                        transform: translateX(100%);
+                        -webkit-transition: 0.34s;
+                        -moz-transition: 0.34s;
+                        transition: 0.34s;
+                        z-index: 9998;
+                    }
+                    .chat-nav > section {
+                        padding: 15px;
+                        color: #8D8D8D
+                    }
+                    .chat-button {
+                        position: absolute;
+                        right: 99.8%;
+                        top: 41%;
+                        box-shadow: 0px 2px 0px 0px rgb(0 0 0 / 25%);
+                        margin-top: -24px;
+                        left: -24px;
+                        padding: 1em 0;
+                        background: inherit;
+                        border-bottom-left-radius: 7px;
+                        border-top-left-radius: 7px;
+                        color: #8D8D8D;
+                        font-size: 1.4em;
+                        line-height: 1;
+                        text-align: center;
+                    }
+                    .chat-button:after {
+                        content: '<';
+                        font: normal 18px/1 'FontAwesome';
+                        text-decoration: inherit;
+                    }
+                    .chat-button:hover{
+                        cursor: pointer;
+                        color:#1f1c1c;
+                    }
+                    [id='chat-button'] {
+                        position: absolute;
+                        right:0;
+                        display:none;
+                    }
+                    [id='chat-button']:checked ~ .chat-nav {
+                        -webkit-transform: translateX(0);
+                        -moz-transform: translateX(0);
+                        transform: translateX(0);
+                    }
+                    [id='chat-button']:checked ~ .chat-nav > .chat-button:after {
+                        content:'>';
+                        font: normal 18px/1 'FontAwesome';
+                    }
+                    body {
+                        -webkit-animation: bugfix infinite 1s;
+                        animation: bugfix infinite 1s;
+                    }
+                    @-webkit-keyframes bugfix {
+                        to { padding: 0; }
+                    }
+                    @media (max-width: 350px) {
+                        .chat-nav {
+                            width: 100%;
+                        }
+                    }
+                    .chat-message-text {
+                        word-break: break-all;
+                        font-size: 18px;
+                        line-height: 21px;
+                        padding-left: 10px;
+                        padding-top: 8px;
+                        padding-right: 4px;
+                        padding-bottom: 8px;
+                        color: #FFFFFF;
+                    }
+                    .chat-message {
+                        width: 343px;
+                        margin-top: 5px;
+                    }
+                    .your-chat-message{
+                        float: right;
+                    }
+                    .chat-message-text-other{
+                        color: #363636;
+                        left: 15px;
+                        background: #FFFFFF;
+                        border-radius: 1px 20px 20px 20px;
+                        min-height: 45px;
+                    }
+                    .chat-message-text-your{
+                        right: 15px;
+                        background: #377DFF;
+                        border-radius: 20px 20px 1px 20px;
+                        min-height: 45px;
+                        margin-bottom:5px;
+                    }
+                    .chat-message-user-type {
+                        font-size: 14px;
+                        line-height: 16px;
+                    }
+                    .other-chat-message-type{
+                        left: 15px;
+                        color: #B4B4B4;
+                        margin-bottom:5px;
+                    }
+                    .your-chat-message-type{
+                        right: 20px;
+                        color: #B4B4B4;
+                    }
+                    #chat-input{
+                        position: absolute;
+                        bottom: 0px;
+                        margin-top: 0px;
+                        margin-bottom: 5px;
+                        width: 462.73px;
+                        height: 59px;
+                        background: #FFFFFF;
+                        resize: none;
+                        border-radius: 20px;
+                        padding: 5px;
+                    }
+                    #chat-input:focus-visible {
+                        outline: -webkit-focus-ring-color auto 0px !important;
+                    }
+                    #send-chat-message-icon{
+                        position: absolute;
+                        bottom: 4px;
+                        right: 0;
+                        margin-bottom: 12px;
+                        margin-right: 18px;
+                    }
+                    #send-chat-message-icon:hover{
+                        cursor: pointer;
+                    }
+                    .another-chat-message{
+                        float:left;
+                    }`
         }
 
         CreateChat() {
