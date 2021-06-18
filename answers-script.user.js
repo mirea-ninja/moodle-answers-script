@@ -19,6 +19,9 @@
 (function () {
     'use strict';
 
+    const QUESTIONS_SELECTOR = '.que';
+    const SERVER_URL = 'https://mirea.ninja:5000/';
+
     class User {
 
         listName = ['Крофос',
