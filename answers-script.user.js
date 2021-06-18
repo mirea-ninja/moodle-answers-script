@@ -651,6 +651,28 @@
             return [answer];
         }
     }
+
+    /**
+     * @extends Question
+     */
+    class MatchQuestion extends Question {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._type = 'match';
+        }
+
+        // todo: редкий тип вопрос, реализовать.
+        get Answers() {
+            console.error(this._type + ' - receiving responses not implemented');
+            return [];
+        }
+    }
+
     }
 
     let user = new User();
