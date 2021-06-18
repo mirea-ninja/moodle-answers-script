@@ -462,6 +462,16 @@
             return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
         }
 
+        /**
+         * @return {string}
+         */
+        get SHA256() {
+            if (!this.CheckLoad) {
+                console.error('Image not loaded, failed to get SHA256.');
+                return '';
+            }
+            return CryptoJS.SHA256(this.Base64).toString();
+        }
     }
         };
     }
