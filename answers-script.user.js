@@ -295,6 +295,26 @@
         get ChatMessages() {
             return this._domChatBlock.querySelector('#chat-messages');
         }
+
+        /**
+         * @private
+         */
+        RegisterSendButtonListener() {
+            let _this = this;
+            this.SendButtonElement.addEventListener('click', function () {
+
+                let textMessage = _this.InputTextBox.value;
+                if (textMessage !== '') {
+                    let message = {
+                        user: _this._user.UserName,
+                        userInfo: _this._user.UserId,
+                        text: textMessage
+                    }
+                    if (_this.callBackSendMessage) {
+                        _this.callBackSendMessage(message);
+                    }
+                }
+            });
         }
 
         CreateChat() {
