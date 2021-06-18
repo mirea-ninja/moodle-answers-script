@@ -407,6 +407,28 @@
                 }
             }
         }
+
+        UpdateAnswersInformation(data) {
+            /**
+             * @type {Question[]}
+             */
+            let questions;
+
+            for (const question of questions) {
+                if (question.TextQuestion !== data['question']) {
+                    continue;
+                }
+
+                const answers = question.Answers;
+                for (const answer of answers) {
+
+                }
+            }
+
+        }
+
+    }
+
     }
         };
     }
