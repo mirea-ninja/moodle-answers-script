@@ -79,6 +79,7 @@
         /**
          * @private
          * @type {string}
+         * @const
          */
         _codeHTML = `
                 <div id="chat-block">
