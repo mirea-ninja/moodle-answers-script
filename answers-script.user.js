@@ -722,10 +722,19 @@
 
         /**
          * @protected
+         * @class {Hint}
+         */
+        _protoHint;
+        /**
+         * @protected
+         * @type Hint[]
+         */
+        _hints = [];
+        /**
+         * @protected
          * @type string
          */
         _type;
-
         /**
          * @public
          * @callback
@@ -734,12 +743,19 @@
         callBackAnswerChange;
 
         /**
+         * @protected
+         * @type {HTMLDivElement}
+         */
+        _domHintViewersBlock;
+
+        /**
          * @param {HTMLDivElement}domQuestionBlock
          * @param {HTMLDivElement}domAnswerBlock
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             this._domQuestionBlock = domQuestionBlock;
             this._domAnswerBlock = domAnswerBlock;
+            this.RegisterButtonListener();
         }
 
         /**
@@ -747,6 +763,14 @@
          */
         get Type() {
             return this._type;
+        }
+
+        /**
+         * @return {NodeListOf<Element>}
+         * @abstract
+         */
+        get OptionsAnswer() {
+
         }
 
         /**
@@ -777,57 +801,102 @@
             return text;
         }
 
-        CreateHintDomBlock() {
-
-        }
-    }
-
-    /**
-     * @extends Question
-     */
-    class ShortAnswerQuestion extends Question {
-
-        /**
-         * @param {HTMLDivElement}domQuestionBlock
-         * @param {HTMLDivElement}domAnswerBlock
-         */
-        constructor(domQuestionBlock, domAnswerBlock) {
-            super(domQuestionBlock, domAnswerBlock);
-            this._type = 'shortanswer';
-        }
-
-        get Answers() {
-            let answer = this._domAnswerBlock.querySelector('input').value.trim();
-            return [answer];
-        }
-    }
-
-    /**
-     * @extends Question
-     */
-    class TrueFalseQuestion extends Question {
-
-        /**
-         * @param {HTMLDivElement}domQuestionBlock
-         * @param {HTMLDivElement}domAnswerBlock
-         */
-        constructor(domQuestionBlock, domAnswerBlock) {
-            super(domQuestionBlock, domAnswerBlock);
-            this._type = 'truefalse';
-        }
-
-        get Answers() {
-            let answerCheckboxOptions = this._domAnswerBlock.querySelectorAll('input');
-            let answer;
-            for (const answerCheckboxOption of answerCheckboxOptions) {
-                if (answerCheckboxOption.checked) {
-                    answer = answerCheckboxOption
-                        .parentElement.querySelector('.ml-1')
-                        .textContent.trim();
-                    break;
-                }
+        set ViewerCounter(viewerCounter) {
+            if (this._domHintViewersBlock) {
+                this._domHintViewersBlock.innerText = viewerCounter;
             }
-            return [answer];
+        }
+
+        /**
+         * @abstract
+         */
+        set HintAnswers(answers) {
+
+        }
+
+        /**
+         * @param {function}callback
+         */
+        set CallBackApprovalButton(callback) {
+            for (const hint of this._hints) {
+                hint.callBackPressApprovalButton = callback;
+            }
+        }
+
+        /**
+         * @abstract
+         */
+        GetAnswerByInput(inputElement) {
+
+        }
+
+        /**
+         * @private
+         */
+        RegisterButtonListener() {
+            let _this = this;
+
+            for (const optionAnswer of this.OptionsAnswer) {
+
+                optionAnswer.addEventListener('change', function () {
+                    let newAnswerData = {
+                        text: _this.TextQuestion,
+                        type: _this.Type,
+                        answers: _this.Answers,
+                    }
+                    if (_this.callBackAnswerChange) {
+                        _this.callBackAnswerChange(newAnswerData);
+                    }
+                });
+            }
+        }
+
+        /**
+         * @private
+         */
+        CreateViewersInformation() {
+            let answerParentBlock = this._domAnswerBlock.parentNode;
+            let viewersHtml = '<div class="script-answer-viewers" style="color: red;' +
+                ' padding-left: 5px; position: relative; background: rgb(0 0 0 / 6%);' +
+                ' border-radius: 4px;">Просмотров со скриптом:' +
+                ' <div class="script-answer-viewers-counter" style="display: contents;">??</div>' +
+                '</div>';
+            answerParentBlock.insertAdjacentHTML('beforeend', viewersHtml);
+            this._domHintViewersBlock = answerParentBlock.querySelector('.script-answer-viewers-counter');
+        }
+
+        CreateHints() {
+            if (this._protoHint === undefined) {
+                console.warn('In answer proto hint not assigned');
+                return;
+            }
+            for (const optionAnswer of this.OptionsAnswer) {
+                /**
+                 * @type {Hint}
+                 */
+                let hint = new this._protoHint(optionAnswer, () => {
+                    return this.GetAnswerByInput(optionAnswer)
+                }, () => {
+                    return this.TextQuestion
+                });
+                this._hints.push(hint);
+            }
+
+            for (const hint of this._hints) {
+                hint.CreateHint();
+            }
+
+            this.CreateViewersInformation();
+        }
+
+        /**
+         * @param {HTMLInputElement}checkBox
+         * @return {string}
+         */
+        GetCheckBoxAnswer(checkBox) {
+            return checkBox
+                .parentElement.querySelector('.ml-1')
+                .textContent.trim();
         }
     }
 
@@ -842,11 +911,161 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = CheckBoxHint;
             this._type = 'multichoice';
         }
 
         get Answers() {
-            let answerCheckboxOptions = this._domAnswerBlock.querySelectorAll('input');
+            let answerCheckboxOptions = this.OptionsAnswer;
+            let answer;
+            for (const answerCheckboxOption of answerCheckboxOptions) {
+                if (answerCheckboxOption.checked) {
+                    answer = this.GetCheckBoxAnswer(answerCheckboxOption);
+                    break;
+                }
+
+            }
+            return [answer];
+        }
+
+        get OptionsAnswer() {
+            return this._domAnswerBlock.querySelectorAll('input[type=radio]');
+        }
+
+        set HintAnswers(answers) {
+            let optionsAnswer = this.OptionsAnswer;
+            for (let i = 0; i < optionsAnswer.length; i++) {
+                this._hints[i].HintInfo = {
+                    check: 0,
+                    correct: 0,
+                    notCorrect: 0
+                };
+                for (const userAnswer of answers) {
+                    if (userAnswer['answer'] === this.GetAnswerByInput(optionsAnswer[i])) {
+                        this._hints[i].HintInfo = {
+                            check: userAnswer['users'].length,
+                            correct: userAnswer['correct'].length,
+                            notCorrect: userAnswer['not_correct'].length
+                        };
+                        break;
+                    }
+                }
+            }
+        }
+
+        GetAnswerByInput(inputElement) {
+            return this.GetCheckBoxAnswer(inputElement);
+        }
+    }
+
+    /**
+     * @extends Question
+     */
+    class MultiChoiceCheckBoxQuestion extends Question {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = CheckBoxHint;
+            this._type = 'multichoice_checkbox';
+        }
+
+        get Answers() {
+            let answerCheckboxOptions = this.OptionsAnswer;
+            let answers = [];
+            for (const answerCheckboxOption of answerCheckboxOptions) {
+                let answer = [this.GetCheckBoxAnswer(answerCheckboxOption), answerCheckboxOption.checked]
+                answers.push(answer);
+            }
+            return answers;
+        }
+
+        get OptionsAnswer() {
+            return this._domAnswerBlock.querySelectorAll('input[type=checkbox]');
+        }
+
+        set HintAnswers(answers) {
+            let optionsAnswer = this.OptionsAnswer;
+            for (let i = 0; i < optionsAnswer.length; i++) {
+                this._hints[i].HintInfo = {
+                    check: 0,
+                    correct: 0,
+                    notCorrect: 0
+                };
+                for (const userAnswer of answers) {
+                    if (userAnswer['answer'] === this.GetAnswerByInput(optionsAnswer[i])) {
+                        this._hints[i].HintInfo = {
+                            check: userAnswer['users'].length,
+                            correct: userAnswer['correct'].length,
+                            notCorrect: userAnswer['not_correct'].length
+                        };
+                        break;
+                    }
+                }
+            }
+        }
+
+        GetAnswerByInput(inputElement) {
+            return this.GetCheckBoxAnswer(inputElement);
+        }
+    }
+
+    /**
+     * @extends Question
+     */
+    class ShortAnswerQuestion extends Question {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = TextInputHint;
+            this._type = 'shortanswer';
+        }
+
+        get Answers() {
+            let answer = this.GetAnswerByInput(this._domAnswerBlock.querySelector('input'));
+            return [answer];
+        }
+
+        get OptionsAnswer() {
+            let optionAnswer = this._domAnswerBlock.querySelector('input');
+            return [optionAnswer];
+        }
+
+        set HintAnswers(answers) {
+            this._hints[0].HintInfo = answers;
+        }
+
+        GetAnswerByInput(inputElement) {
+            return inputElement.value.trim();
+        }
+    }
+
+    /**
+     * @extends MultiChoiceQuestion
+     */
+    class TrueFalseQuestion extends MultiChoiceQuestion {
+
+        /**
+         * @param {HTMLDivElement}domQuestionBlock
+         * @param {HTMLDivElement}domAnswerBlock
+         */
+        constructor(domQuestionBlock, domAnswerBlock) {
+            super(domQuestionBlock, domAnswerBlock);
+            this._type = 'truefalse';
+        }
+
+        /**
+         * @override
+         */
+        get Answers() {
+            let answerCheckboxOptions = this.OptionsAnswer;
             let answers = [];
             for (const answerCheckboxOption of answerCheckboxOptions) {
                 if (answerCheckboxOption.checked) {
@@ -857,6 +1076,13 @@
                 }
             }
             return answers;
+        }
+
+        /**
+         * @override
+         */
+        get OptionsAnswer() {
+            return this._domAnswerBlock.querySelectorAll('input[type=radio]');
         }
     }
 
@@ -872,12 +1098,26 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = TextInputHint;
             this._type = 'numerical';
         }
 
         get Answers() {
-            let answer = this._domAnswerBlock.querySelector('input').value.trim();
+            let answer = this.GetAnswerByInput(this._domAnswerBlock.querySelector('input'));
             return [answer];
+        }
+
+        get OptionsAnswer() {
+            let optionAnswer = this._domAnswerBlock.querySelector('input');
+            return [optionAnswer];
+        }
+
+        set HintAnswers(answers) {
+            this._hints[0].HintInfo = answers;
+        }
+
+        GetAnswerByInput(inputElement) {
+            return inputElement.value.trim();
         }
     }
 
@@ -899,6 +1139,16 @@
         get Answers() {
             console.error(this._type + ' - receiving responses not implemented');
             return [];
+        }
+
+        get OptionsAnswer() {
+            return [];
+        }
+
+        set HintAnswers(answers) {
+        }
+
+        GetAnswerByInput(inputElement) {
         }
     }
 
@@ -929,16 +1179,18 @@
                         question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
                         break;
                     case 'multichoice':
-                        question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                        let isCheckBox = domAnswerBlock.querySelector('input[type=checkbox]') !== null;
+                        if (isCheckBox) {
+                            question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
+                        } else {
+                            question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                        }
                         break;
                     case 'numerical':
                         question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
                         break;
                     case 'match':
                         question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    default:
-                        console.error(questionType + ' - not implemented');
                         break;
                 }
                 return question;
