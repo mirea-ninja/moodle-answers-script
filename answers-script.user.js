@@ -824,11 +824,12 @@
             const imagesElements = this._domQuestionBlock.querySelectorAll('.qtext img');
             for (const imageElement of imagesElements) {
                 let img = new Image(imageElement);
-                let imgHash = img.SHA256;
-                if (imgHash.length === 0) {
+                let imgData = img.Base64;
+                if (imgData.length === 0) {
                     console.error('Image not loaded, perhaps the question will not be identified correctly.');
                 }
-                text += " img:" + imgHash;
+                console.log(imgData);
+                text += " img:" + imgData;
             }
 
             return text;
