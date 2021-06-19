@@ -3,7 +3,7 @@
 // @namespace    https://mirea.ninja/
 // @version      2.0.0
 // @description  online test answers!
-// @author       admin
+// @author       admin and SyntOwl
 // @match        *://online-edu.mirea.ru/*
 // @match        *://oniel.beget.tech/*
 // @updateURL    https://raw.githubusercontent.com/SyntOwl/answers-script/main/answers-script.meta.js
