@@ -1063,6 +1063,9 @@
 
         get Answers() {
             let answer = this.GetAnswerByInput(this._domAnswerBlock.querySelector('input'));
+            if (answer === ''){
+                return [];
+            }
             return [answer];
         }
 
