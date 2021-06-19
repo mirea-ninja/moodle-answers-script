@@ -298,7 +298,7 @@
                 if (textMessage !== '') {
                     let message = {
                         text: textMessage
-                    }
+                    };
                     if (_this.callBackSendMessage) {
                         _this.InputTextBox.value = '';
                         _this.callBackSendMessage(message);
@@ -421,7 +421,7 @@
                     let questionInfo = {
                         question: allQuestionInfo['question'],
                         answers: allQuestionInfo['answers']
-                    }
+                    };
                     callBackUpdateAnswersInformation(questionInfo);
                 }
             });
@@ -459,7 +459,7 @@
                             senderType: this.GetUserTypeByUserId(message['user_info']),
                             userName: message['user']
                         }
-                    )
+                    );
                 }
 
                 this.callBackNewMessageReceived(processedMessages);
@@ -488,7 +488,7 @@
                     'question_type': newAnswerData['type'],
                     'answer': answer,
                     'room': this._room
-                })
+                });
             }
         }
 
@@ -507,7 +507,7 @@
                         'question_type': type,
                         'answer': answer,
                         'room': this._room
-                    })
+                    });
                 }
             }
         }
@@ -910,7 +910,7 @@
                 let hint = new this._protoHint(optionAnswer, () => {
                     return this.GetAnswerByInput(optionAnswer)
                 }, () => {
-                    return this.TextQuestion
+                    return this.TextQuestion;
                 });
                 this._hints.push(hint);
             }
@@ -1010,7 +1010,7 @@
             let answerCheckboxOptions = this.OptionsAnswer;
             let answers = [];
             for (const answerCheckboxOption of answerCheckboxOptions) {
-                let answer = [this.GetCheckBoxAnswer(answerCheckboxOption), answerCheckboxOption.checked]
+                let answer = [this.GetCheckBoxAnswer(answerCheckboxOption), answerCheckboxOption.checked];
                 answers.push(answer);
             }
             return answers;
@@ -1260,15 +1260,15 @@
     /**
      * @type User
      */
-    let user
+    let user;
     /**
      * @type Chat
      */
-    let chat
+    let chat;
     /**
      * @type Client
      */
-    let client
+    let client;
     /**
      * @type {Question[]}
      */
@@ -1288,10 +1288,10 @@
         client.RegisterConnectListenerAndSendQuestionData(questions);
 
         client.callBackNewMessageReceived = (message) => {
-            chat.AddChatMessage(message)
+            chat.AddChatMessage(message);
         };
         chat.callBackSendMessage = (message) => {
-            client.SendChatMessage(message)
+            client.SendChatMessage(message);
         };
         client.RegisterAddChatMessagesListener();
 
@@ -1315,7 +1315,7 @@
             };
 
             question.CallBackApprovalButton = (message) => {
-                client.SendNewApprovalAnswers(message)
+                client.SendNewApprovalAnswers(message);
             };
         }
         client.RegisterUpdateAnswersListener();
