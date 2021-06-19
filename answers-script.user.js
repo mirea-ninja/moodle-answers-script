@@ -358,6 +358,10 @@
          */
         callBackNewMessageReceived;
 
+        callBackArrayUpdateAnswersInformation = [];
+
+        callBackArrayUpdateViewersCounter = [];
+
         constructor(url, user, room) {
             this._socket = io(url);
 
@@ -372,7 +376,7 @@
         /**
          * @param {Question[]}questions
          */
-        RegisterConnectListener(questions) {
+        RegisterConnectListenerAndSendQuestionData(questions) {
             this._socket.on('connect', () => {
                 this._socket.emit('join', this._room);
 
@@ -395,6 +399,44 @@
             });
         }
 
+        RegisterUpdateViewersListener() {
+            // событие вызывается при обновлении счётчика просмотров у вопроса
+            this._socket.on('update_viewers', (questionsInfo) => {
+
+                for (const callBackUpdateViewersCounter of this.callBackArrayUpdateViewersCounter) {
+                    for (let i = 0; i < questionsInfo['data'].length; i++) {
+                        let questionViewerInfo = {
+                            question: questionsInfo['data'][i]['question'],
+                            viewers: questionsInfo['data'][i]['viewers'].length
+                        }
+                        callBackUpdateViewersCounter(questionViewerInfo);
+                    }
+                }
+            });
+        }
+
+        RegisterUpdateAnswersListener() {
+            // событие вызывается при обновлении каких-то ответов на сервере
+            this._socket.on('update_answers', (allQuestionInfo) => {
+                for (const callBackUpdateAnswersInformation of this.callBackArrayUpdateAnswersInformation) {
+                    let questionInfo = {
+                        question: allQuestionInfo['question'],
+                        answers: allQuestionInfo['answers']
+                    }
+                    callBackUpdateAnswersInformation(questionInfo);
+                }
+            });
+        }
+
+        SendNewApprovalAnswers(message) {
+            this._socket.emit('add_approve', {
+                'user_info': this._user.UserId,
+                'question': message['question'],
+                'is_correct': message['buttonValue'],
+                'answer': message['answer'],
+                'room': this._room
+            });
+        }
 
         GetUserTypeByUserId(userId) {
             if (this._user.UserId === userId) {
@@ -437,6 +479,21 @@
         }
 
         /**
+         * @param {{answers: *[], text: string, type: string}}newAnswerData
+         */
+        SendNewAnswerToQuestion(newAnswerData) {
+            for (const answer of newAnswerData['answers']) {
+                this._socket.emit('add_answer', {
+                    'user_info': this._user.UserId,
+                    'question': newAnswerData['text'],
+                    'question_type': newAnswerData['type'],
+                    'answer': answer,
+                    'room': this._room
+                })
+            }
+        }
+
+        /**
          * @param {Question[]}questions
          */
         UpdateAnswersOnDocumentReady(questions) {
@@ -454,29 +511,6 @@
                     })
                 }
             }
-        }
-
-        /**
-         * @param {{viewers: string[], question: string, answers: string[]}} data
-         * @constructor
-         */
-        UpdateAnswersInformation(data) {
-            /**
-             * @type {Question[]}
-             */
-            let questions;
-
-            for (const question of questions) {
-                if (question.TextQuestion !== data['question']) {
-                    continue;
-                }
-
-                const answers = question.Answers;
-                for (const answer of answers) {
-
-                }
-            }
-
         }
 
     }
@@ -1224,14 +1258,18 @@
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
 
-
-    let user = new User();
-    let chat = new Chat();
+    /**
+     * @type User
+     */
+    let user
+    /**
+     * @type Chat
+     */
+    let chat
     /**
      * @type Client
      */
     let client
-
     /**
      * @type {Question[]}
      */
@@ -1248,7 +1286,8 @@
         const room = CryptoJS.SHA256(questions[0].TextQuestion).toString();
         client = new Client(SERVER_URL, user, room);
 
-        client.RegisterConnectListener(questions);
+        client.RegisterConnectListenerAndSendQuestionData(questions);
+
         client.callBackNewMessageReceived = (message) => {
             chat.AddChatMessage(message)
         };
@@ -1256,13 +1295,44 @@
             client.SendChatMessage(message)
         };
         client.RegisterAddChatMessagesListener();
+
         for (const question of questions) {
-            console.log(question.Answers);
+            question.CreateHints();
+
+            client.callBackArrayUpdateViewersCounter.push((data) => {
+                if (question.TextQuestion === data['question']) {
+                    question.ViewerCounter = data['viewers'];
+                }
+            });
+
+            client.callBackArrayUpdateAnswersInformation.push((data) => {
+                if (question.TextQuestion === data['question']) {
+                    question.HintAnswers = data['answers'];
+                }
+            });
+
+            question.callBackAnswerChange = (newAnswerData) => {
+                client.SendNewAnswerToQuestion(newAnswerData);
+            };
+
+            question.CallBackApprovalButton = (message) => {
+                client.SendNewApprovalAnswers(message)
+            };
         }
+        client.RegisterUpdateAnswersListener();
+        client.RegisterUpdateViewersListener();
+
     }
 
     function OnDOMReady() {
         questions = GetQuestions(QUESTIONS_SELECTOR);
+
+        if (questions.length === 0) {
+            return;
+        }
+
+        user = new User();
+        chat = new Chat();
 
         chat.CreateChat();
 
@@ -1270,7 +1340,6 @@
             .then(fp => fp.get())
             .then(result => {
                 user.UserId = result.visitorId;
-                chat.User = user;
                 switch (document.readyState) {
                     case 'loading':
                     case 'interactive':
