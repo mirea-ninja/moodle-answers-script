@@ -260,23 +260,11 @@
         _domChatBlock;
 
         /**
-         * @private
-         * @type User
-         */
-        _user;
-        /**
          * @public
          * @callback
-            * @param {{userInfo: string, text: string, user: string}} message
+            * @param {string} message
          */
         callBackSendMessage;
-
-        /**
-         * @param {User}user
-         */
-        set User(user) {
-            this._user = user;
-        }
 
         /**
          * @return {HTMLOrSVGImageElement}
@@ -309,8 +297,6 @@
                 let textMessage = _this.InputTextBox.value;
                 if (textMessage !== '') {
                     let message = {
-                        user: _this._user.UserName,
-                        userInfo: _this._user.UserId,
                         text: textMessage
                     }
                     if (_this.callBackSendMessage) {
@@ -333,20 +319,20 @@
         }
 
         /**
-         * @param {[{userInfo: string, text: string, user: string}]} messages
+         * @param {[{senderType: string, text: string, userName: string}]} messages
          */
         AddChatMessage(messages) {
             for (const message of messages) {
                 let messageHtml;
-                if (message['user_info'] !== this._user.UserId) {
+                if (message['senderType'] !== 'our') {
                     messageHtml = `<div class="chat-message another-chat-message">
-                                    <p class="chat-message-user-type other-chat-message-type">${message['user']}</p>
+                                    <p class="chat-message-user-type other-chat-message-type">${message['userName']}</p>
                                     <p class="chat-message-text chat-message-text-other">${message['text']}</p>
                                 </div>`;
                 } else {
                     messageHtml = `<div class="chat-message your-chat-message">
                             <p class="chat-message-text chat-message-text-your">${message['text']}</p>
-                            <p class="chat-message-user-type your-chat-message-type your-chat-message">вы</p>
+                            <p class="chat-message-user-type your-chat-message-type your-chat-message">${message['userName']}(ВЫ)</p>
                         </div>`;
                 }
 
@@ -373,6 +359,11 @@
 
         constructor(url, user, room) {
             this._socket = io(url);
+
+            /**
+             * @private
+             * @type User
+             */
             this._user = user;
             this._room = room;
         }
@@ -392,7 +383,7 @@
                 this._socket.emit('view_question', {
                     'data': {
                         'questions': textQuestions,
-                        'user_info': user.UserId,
+                        'user_info': this._user.UserId,
                         'room': this._room
                     }
                 });
@@ -404,11 +395,32 @@
         }
 
 
+        GetUserTypeByUserId(userId) {
+            if (this._user.UserId === userId) {
+                return 'our';
+            } else {
+                return 'other';
+            }
+        }
+
+
         RegisterAddChatMessagesListener(question) {
             // событие вызывается при получении нового сообщения в чате
 
             this._socket.on('add_chat_messages', (messages) => {
-                this.callBackNewMessageReceived(messages);
+                let processedMessages = [];
+
+                for (const message of messages) {
+                    processedMessages.push(
+                        {
+                            text: message['text'],
+                            senderType: this.GetUserTypeByUserId(message['user_info']),
+                            userName: message['user']
+                        }
+                    )
+                }
+
+                this.callBackNewMessageReceived(processedMessages);
             });
         }
 
@@ -416,8 +428,8 @@
             this._socket.emit('chat', {
                 'room': this._room,
                 'message': {
-                    'user': message.user,
-                    'user_info': message.userInfo,
+                    'user': this._user.UserName,
+                    'user_info': this._user.UserId,
                     'text': message.text
                 }
             });
