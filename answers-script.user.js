@@ -539,8 +539,8 @@
                 return '';
             }
             let canvas = document.createElement("canvas");
-            canvas.width = this._imgElement.width;
-            canvas.height = this._imgElement.height;
+            canvas.width = this._imgElement.naturalWidth;
+            canvas.height = this._imgElement.naturalHeight;
             let ctx = canvas.getContext("2d");
             ctx.drawImage(this._imgElement, 0, 0);
             let dataURL = canvas.toDataURL("image/png");
