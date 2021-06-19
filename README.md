@@ -5,6 +5,10 @@
 Для работы скрипта требуется сервер: https://github.com/Ninja-Official/answers-backend
 
 ## Установка
-1. Установите расширение Tampermonkey для своего браузера с официального сайта (для всех браузеров) или напрямую с магазина расширений Chrome.
-2. Откройте расширение и создайте новый скрипт.
-3. Вставьте туда код скрипта.
+1. Убедитесь, что в вашем браузере установлен и включен диспетчер для пользовательских скриптов.
+   - [Violent Monkey](https://violentmonkey.github.io/)  *(OPEN SOURCE)*
+   - [Tampermonkey](https://tampermonkey.net/)
+2. Скприпт можно установить прямо из GitHyb, на странице 
+   **[./answers-script.user.js](./answers-script.user.js)** нажать кнопку "RAW" или 
+   **[здесь](https://github.com/Ninja-Official/answers-script/raw/main/answers-script.user.js)**.
+3. Подтвердить устанровку.
