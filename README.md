@@ -8,7 +8,7 @@
 1. Убедитесь, что в вашем браузере установлен и включен диспетчер для пользовательских скриптов.
    - [Violent Monkey](https://violentmonkey.github.io/)  *(OPEN SOURCE)*
    - [Tampermonkey](https://tampermonkey.net/)
-2. Скприпт можно установить прямо из GitHyb, на странице 
-   **[./answers-script.user.js](./answers-script.user.js)** нажать кнопку "RAW" или 
+2. Скрипт можно установить прямо из GitHub, на странице
+   **[./answers-script.user.js](./answers-script.user.js)** нажать кнопку "RAW" или
    **[здесь](https://github.com/Ninja-Official/answers-script/raw/main/answers-script.user.js)**.
-3. Подтвердить устанровку.
+3. Подтвердить установку.
