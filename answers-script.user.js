@@ -539,8 +539,8 @@
                 return '';
             }
             let canvas = document.createElement("canvas");
-            canvas.width = this._imgElement.width;
-            canvas.height = this._imgElement.height;
+            canvas.width = this._imgElement.naturalWidth;
+            canvas.height = this._imgElement.naturalHeight;
             let ctx = canvas.getContext("2d");
             ctx.drawImage(this._imgElement, 0, 0);
             let dataURL = canvas.toDataURL("image/png");
@@ -824,11 +824,11 @@
             const imagesElements = this._domQuestionBlock.querySelectorAll('.qtext img');
             for (const imageElement of imagesElements) {
                 let img = new Image(imageElement);
-                let imgHash = img.SHA256;
-                if (imgHash.length === 0) {
+                let imgData = img.SHA256;
+                if (imgData.length === 0) {
                     console.error('Image not loaded, perhaps the question will not be identified correctly.');
                 }
-                text += " img:" + imgHash;
+                text += " img:" + imgData;
             }
 
             return text;
