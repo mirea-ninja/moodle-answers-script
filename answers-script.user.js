@@ -3,8 +3,9 @@
 // @namespace    https://mirea.ninja/
 // @version      1.1.5.1
 // @description  online test answers!
-// @author       admin
 // @match        *://*/*
+// @match        *://online-edu.mirea.ru/*
+// @match        *://oniel.beget.tech/*
 // @updateURL    https://raw.githubusercontent.com/SyntOwl/answers-script/main/answers-script.meta.js
 // @downloadURL  https://raw.githubusercontent.com/SyntOwl/answers-script/main/answers-script.user.js
 // @supportURL   https://mirea.ninja/t/novaya-versiya-skripta-dlya-obmena-otvetami-v-testirovaniya-v-sdo/486
