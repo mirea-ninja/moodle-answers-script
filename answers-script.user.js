@@ -1181,7 +1181,7 @@
         }
 
         get OptionsAnswer() {
-            return [];
+            return this._domAnswerBlock.querySelectorAll('select');
         }
 
         set HintAnswers(answers) {
