@@ -1171,6 +1171,7 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = TextHint;
             this._type = 'match';
         }
 
