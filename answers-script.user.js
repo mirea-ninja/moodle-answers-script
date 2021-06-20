@@ -1174,10 +1174,23 @@
             this._type = 'match';
         }
 
-        // todo: редкий тип вопрос, реализовать.
         get Answers() {
-            console.error(this._type + ' - receiving responses not implemented');
-            return [];
+            /**
+             * @type {NodeListOf<HTMLSelectElement>}
+             */
+            let optionsAnswer = this.OptionsAnswer;
+            let answers = [];
+            for (const optionAnswer of optionsAnswer) {
+                let answer = [this.GetAnswerByInput(optionAnswer)];
+                let selectedOption = optionAnswer.selectedOptions[0];
+                if (selectedOption.index === 0) {
+                    answer.push('none');
+                } else {
+                    answer.push(selectedOption.text);
+                }
+                answers.push(answer);
+            }
+            return answers;
         }
 
         get OptionsAnswer() {
