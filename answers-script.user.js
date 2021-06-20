@@ -1187,7 +1187,15 @@
         set HintAnswers(answers) {
         }
 
+        /**
+         * @param {HTMLSelectElement}inputElement
+         */
         GetAnswerByInput(inputElement) {
+            return inputElement
+                .parentElement.parentElement
+                .querySelector('.text')
+                .textContent.trim();
+
         }
     }
 
