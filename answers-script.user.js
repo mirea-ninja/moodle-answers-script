@@ -596,7 +596,7 @@
     /**
      * @extends Hint
      */
-    class TextInputHint extends Hint {
+    class TextHint extends Hint {
 
 
         /**
@@ -1057,7 +1057,7 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
-            this._protoHint = TextInputHint;
+            this._protoHint = TextHint;
             this._type = 'shortanswer';
         }
 
@@ -1134,7 +1134,7 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
-            this._protoHint = TextInputHint;
+            this._protoHint = TextHint;
             this._type = 'numerical';
         }
 
