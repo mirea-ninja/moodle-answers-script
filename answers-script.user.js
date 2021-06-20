@@ -1185,6 +1185,24 @@
         }
 
         set HintAnswers(answers) {
+
+            let optionsAnswer = this.OptionsAnswer;
+            for (let i = 0; i < optionsAnswer.length; i++) {
+                for (const userAnswer of answers) {
+                    if (userAnswer['subquestion'] === this.GetAnswerByInput(optionsAnswer[i])) {
+                        this._hints[i].HintInfo = answers;
+                        break;
+                    }
+                }
+            }
+
+            for (const hint of this._hints) {
+                for (const answer of answers) {
+                    if (answer['subquestion'] === '') {
+                        hint.HintInfo = answers;
+                    }
+                }
+            }
         }
 
         /**
