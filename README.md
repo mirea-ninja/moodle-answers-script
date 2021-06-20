@@ -12,3 +12,10 @@
    **[./answers-script.user.js](./answers-script.user.js)** нажать кнопку "RAW" или
    **[здесь](https://github.com/Ninja-Official/answers-script/raw/main/answers-script.user.js)**.
 3. Подтвердить установку.
+
+## Скриншоты
+![image](https://user-images.githubusercontent.com/51058739/122669255-1ff75f00-d1c5-11eb-98da-72d872ec1948.png)
+
+![image](https://user-images.githubusercontent.com/51058739/122669261-2980c700-d1c5-11eb-87f9-f23f9869facc.png)
+
+![2OLfgttpsC](https://user-images.githubusercontent.com/51058739/122669347-9005e500-d1c5-11eb-9a52-577f05dff3cd.gif)
