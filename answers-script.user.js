@@ -419,6 +419,9 @@
         RegisterUpdateAnswersListener() {
             // событие вызывается при обновлении каких-то ответов на сервере
             this._socket.on('update_answers', (allQuestionInfo) => {
+                if(allQuestionInfo === undefined){
+                    return;
+                }
                 for (const callBackUpdateAnswersInformation of this.callBackArrayUpdateAnswersInformation) {
                     let questionInfo = {
                         question: allQuestionInfo['question'],
