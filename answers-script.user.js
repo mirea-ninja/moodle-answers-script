@@ -455,6 +455,9 @@
             // событие вызывается при получении нового сообщения в чате
 
             this._socket.on('add_chat_messages', (messages) => {
+                if(messages === undefined){
+                    return;
+                }
                 let processedMessages = [];
 
                 for (const message of messages) {
