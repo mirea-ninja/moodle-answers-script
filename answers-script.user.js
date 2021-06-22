@@ -401,7 +401,9 @@
         RegisterUpdateViewersListener() {
             // событие вызывается при обновлении счётчика просмотров у вопроса
             this._socket.on('update_viewers', (questionsInfo) => {
-
+                if(questionsInfo === undefined){
+                    return;
+                }
                 for (const callBackUpdateViewersCounter of this.callBackArrayUpdateViewersCounter) {
                     for (let i = 0; i < questionsInfo['data'].length; i++) {
                         let questionViewerInfo = {
