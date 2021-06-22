@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mirea Ninja Answers
 // @namespace    https://mirea.ninja/
-// @version      2.0.0
+// @version      2.0.1
 // @description  online test answers!
 // @author       admin and SyntOwl
 // @match        *://online-edu.mirea.ru/*
@@ -401,7 +401,9 @@
         RegisterUpdateViewersListener() {
             // событие вызывается при обновлении счётчика просмотров у вопроса
             this._socket.on('update_viewers', (questionsInfo) => {
-
+                if(questionsInfo === undefined){
+                    return;
+                }
                 for (const callBackUpdateViewersCounter of this.callBackArrayUpdateViewersCounter) {
                     for (let i = 0; i < questionsInfo['data'].length; i++) {
                         let questionViewerInfo = {
@@ -417,6 +419,9 @@
         RegisterUpdateAnswersListener() {
             // событие вызывается при обновлении каких-то ответов на сервере
             this._socket.on('update_answers', (allQuestionInfo) => {
+                if(allQuestionInfo === undefined){
+                    return;
+                }
                 for (const callBackUpdateAnswersInformation of this.callBackArrayUpdateAnswersInformation) {
                     let questionInfo = {
                         question: allQuestionInfo['question'],
@@ -450,6 +455,9 @@
             // событие вызывается при получении нового сообщения в чате
 
             this._socket.on('add_chat_messages', (messages) => {
+                if(messages === undefined){
+                    return;
+                }
                 let processedMessages = [];
 
                 for (const message of messages) {
