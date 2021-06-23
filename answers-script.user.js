@@ -604,7 +604,7 @@
     /**
      * @extends Hint
      */
-    class TextInputHint extends Hint {
+    class TextHint extends Hint {
 
 
         /**
@@ -1065,7 +1065,7 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
-            this._protoHint = TextInputHint;
+            this._protoHint = TextHint;
             this._type = 'shortanswer';
         }
 
@@ -1142,7 +1142,7 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
-            this._protoHint = TextInputHint;
+            this._protoHint = TextHint;
             this._type = 'numerical';
         }
 
@@ -1179,23 +1179,64 @@
          */
         constructor(domQuestionBlock, domAnswerBlock) {
             super(domQuestionBlock, domAnswerBlock);
+            this._protoHint = TextHint;
             this._type = 'match';
         }
 
-        // todo: редкий тип вопрос, реализовать.
         get Answers() {
-            console.error(this._type + ' - receiving responses not implemented');
-            return [];
+            /**
+             * @type {NodeListOf<HTMLSelectElement>}
+             */
+            let optionsAnswer = this.OptionsAnswer;
+            let answers = [];
+            for (const optionAnswer of optionsAnswer) {
+                let answer = [this.GetAnswerByInput(optionAnswer)];
+                let selectedOption = optionAnswer.selectedOptions[0];
+                if (selectedOption.index === 0) {
+                    answer.push('none');
+                } else {
+                    answer.push(selectedOption.text);
+                }
+                answers.push(answer);
+            }
+            return answers;
         }
 
         get OptionsAnswer() {
-            return [];
+            return this._domAnswerBlock.querySelectorAll('select');
         }
 
         set HintAnswers(answers) {
+
+            let optionsAnswer = this.OptionsAnswer;
+            for (let i = 0; i < optionsAnswer.length; i++) {
+                let optionAnswers = []
+                for (const userAnswer of answers) {
+                    if (userAnswer['subquestion'] === this.GetAnswerByInput(optionsAnswer[i])) {
+                        optionAnswers.push(userAnswer)
+                    }
+                }
+                this._hints[i].HintInfo = optionAnswers;
+            }
+            
+            for (const hint of this._hints) {
+                for (const answer of answers) {
+                    if (answer['subquestion'] === '') {
+                        hint.HintInfo = [answer];
+                    }
+                }
+            }
         }
 
+        /**
+         * @param {HTMLSelectElement}inputElement
+         */
         GetAnswerByInput(inputElement) {
+            return inputElement
+                .parentElement.parentElement
+                .querySelector('.text')
+                .textContent.trim();
+
         }
     }
 
