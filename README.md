@@ -5,7 +5,7 @@
 Для работы скрипта требуется сервер: https://github.com/Ninja-Official/answers-backend
 
 ## Установка
-1. Убедитесь, что в вашем браузере установлен и включен диспетчер для пользовательских скриптов.
+1. Убедитесь, что в вашем браузере установлен и включен диспетчер пользовательских скриптов.
    - [Violent Monkey](https://violentmonkey.github.io/)  *(OPEN SOURCE)*
    - [Tampermonkey](https://tampermonkey.net/)
 2. Скрипт можно установить прямо из GitHub, на странице
