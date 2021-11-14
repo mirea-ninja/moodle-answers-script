@@ -362,7 +362,7 @@
         callBackArrayUpdateViewersCounter = [];
 
         constructor(url, user, room) {
-            this._socket = io(url);
+            this._socket = io(url, {transports: ['websocket', 'polling', 'flashsocket']});
 
             /**
              * @private
