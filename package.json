@@ -1,0 +1,20 @@
+{
+  "name": "answers-script",
+  "version": "2.1.0",
+  "description": "online test answers!",
+  "author": "admin and SyntOwl",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ninja-Official/moodle-answers-script.git"
+  },
+  "keywords": [
+    "moodle",
+    "tampermonkey-script",
+    "violentmonkey-script"
+  ],
+  "bugs": {
+    "url": "https://github.com/Ninja-Official/moodle-answers-script/issues"
+  },
+  "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme"
+}
