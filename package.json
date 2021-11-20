@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/Ninja-Official/moodle-answers-script/issues"
   },
-  "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme"
+  "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme",
+  "devDependencies": {
+    "rollup": "^2.60.0",
+    "rollup-plugin-userscript": "^0.1.1"
+  }
 }
