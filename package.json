@@ -1,5 +1,5 @@
 {
-  "name": "answers-script",
+  "name": "mirea_ninja_answers",
   "version": "2.1.0",
   "description": "online test answers!",
   "author": "admin and SyntOwl",
@@ -7,6 +7,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ninja-Official/moodle-answers-script.git"
+  },
+  "scripts": {
+    "dev": "rollup -wc rollup.conf.js"
   },
   "keywords": [
     "moodle",
