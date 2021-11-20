@@ -56,7 +56,7 @@ export default class Client {
     RegisterUpdateViewersListener() {
         // событие вызывается при обновлении счётчика просмотров у вопроса
         this._socket.on('update_viewers', (questionsInfo) => {
-            if(questionsInfo === undefined){
+            if (questionsInfo === undefined) {
                 return;
             }
             for (const callBackUpdateViewersCounter of this.callBackArrayUpdateViewersCounter) {
@@ -74,7 +74,7 @@ export default class Client {
     RegisterUpdateAnswersListener() {
         // событие вызывается при обновлении каких-то ответов на сервере
         this._socket.on('update_answers', (allQuestionInfo) => {
-            if(allQuestionInfo === undefined){
+            if (allQuestionInfo === undefined) {
                 return;
             }
             for (const callBackUpdateAnswersInformation of this.callBackArrayUpdateAnswersInformation) {
@@ -110,7 +110,7 @@ export default class Client {
         // событие вызывается при получении нового сообщения в чате
 
         this._socket.on('add_chat_messages', (messages) => {
-            if(messages === undefined){
+            if (messages === undefined) {
                 return;
             }
             let processedMessages = [];
