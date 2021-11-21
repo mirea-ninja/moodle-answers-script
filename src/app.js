@@ -90,7 +90,7 @@ export default class App {
             }
         }
 
-        return this.GetQuestion;
+        return this.Questions;
     }
 
     IsProtectedPage() {
@@ -116,10 +116,10 @@ export default class App {
             this.DisableProtectedPageRestrictions();
         }
 
-        const room = CryptoJS.SHA256(this.GetQuestion[0].TextQuestion).toString();
+        const room = CryptoJS.SHA256(this.Questions[0].TextQuestion).toString();
         this._client = new Client('https://mirea.ninja:5000/', this._user, room);
 
-        this._client.RegisterConnectListenerAndSendQuestionData(this.GetQuestion);
+        this._client.RegisterConnectListenerAndSendQuestionData(this.Questions);
 
         this._client.callBackNewMessageReceived = (message) => {
             this._chat.AddChatMessage(message);
@@ -129,7 +129,7 @@ export default class App {
         };
         this._client.RegisterAddChatMessagesListener();
 
-        for (const question of this.GetQuestion) {
+        for (const question of this.Questions) {
             question.CreateHints();
 
             this._client.callBackArrayUpdateViewersCounter.push((data) => {
