@@ -1334,11 +1334,11 @@ class App {
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
 
-    Start(){
+    Start() {
         this._user = new User();
         this._chat = new Chat();
 
-        this._user.UserId =this.UserId;
+        this._user.UserId = this.UserId;
         this._chat.CreateChat();
 
         if (this.IsProtectedPage()) {
@@ -1396,8 +1396,7 @@ function OnDOMReady() {
 
     if (app.Questions.length === 0) {
         app = null;
-    }
-    else {
+    } else {
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {

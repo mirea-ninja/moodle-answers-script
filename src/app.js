@@ -105,11 +105,11 @@ export default class App {
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
 
-    Start(){
+    Start() {
         this._user = new User();
         this._chat = new Chat();
 
-        this._user.UserId =this.UserId
+        this._user.UserId = this.UserId
         this._chat.CreateChat();
 
         if (this.IsProtectedPage()) {

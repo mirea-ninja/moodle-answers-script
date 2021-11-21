@@ -10,8 +10,7 @@ function OnDOMReady() {
 
     if (app.Questions.length === 0) {
         app = null;
-    }
-    else {
+    } else {
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {
