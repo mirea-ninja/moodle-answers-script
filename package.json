@@ -21,7 +21,11 @@
   },
   "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme",
   "devDependencies": {
+    "@types/crypto-js": "^4.0.2",
     "rollup": "^2.60.0",
     "rollup-plugin-userscript": "^0.1.1"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1"
   }
 }
