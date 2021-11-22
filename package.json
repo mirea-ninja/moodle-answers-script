@@ -9,6 +9,7 @@
     "url": "git+https://github.com/Ninja-Official/moodle-answers-script.git"
   },
   "scripts": {
+    "build": "rollup -c rollup.conf.js",
     "dev": "rollup -wc rollup.conf.js"
   },
   "keywords": [
