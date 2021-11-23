@@ -1,0 +1,33 @@
+{
+  "name": "mirea_ninja_answers",
+  "version": "2.1.0",
+  "description": "online test answers!",
+  "author": "admin and SyntOwl",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ninja-Official/moodle-answers-script.git"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.conf.js",
+    "dev": "rollup -wc rollup.conf.js"
+  },
+  "keywords": [
+    "moodle",
+    "tampermonkey-script",
+    "violentmonkey-script"
+  ],
+  "bugs": {
+    "url": "https://github.com/Ninja-Official/moodle-answers-script/issues"
+  },
+  "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme",
+  "devDependencies": {
+    "@types/crypto-js": "^4.0.2",
+    "rollup": "^2.60.0",
+    "rollup-plugin-userscript": "^0.1.1"
+  },
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^3.3.0",
+    "crypto-js": "^4.1.1"
+  }
+}
