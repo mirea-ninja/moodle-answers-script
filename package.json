@@ -9,6 +9,8 @@
     "url": "git+https://github.com/Ninja-Official/moodle-answers-script.git"
   },
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "build": "rollup -c rollup.conf.js",
     "dev": "rollup -wc rollup.conf.js"
   },
@@ -23,6 +25,7 @@
   "homepage": "https://github.com/Ninja-Official/moodle-answers-script#readme",
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",
+    "eslint": "^8.4.1",
     "rollup": "^2.60.0",
     "rollup-plugin-userscript": "^0.1.1"
   },
