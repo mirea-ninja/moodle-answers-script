@@ -1,4 +1,4 @@
-import Hint from "./hint";
+import Hint from './hint';
 
 /**
  * @extends Hint

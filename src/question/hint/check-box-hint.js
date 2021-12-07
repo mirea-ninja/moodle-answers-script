@@ -1,4 +1,4 @@
-import Hint from "./hint";
+import Hint from './hint';
 
 /**
  * @extends Hint
@@ -60,6 +60,7 @@ export default class CheckBoxHint extends Hint {
               }
             `;
 
+        // eslint-disable-next-line no-undef
         GM_addStyle(buttonsCss);
 
         let inputElements = this._domHintBlock;
@@ -69,7 +70,7 @@ export default class CheckBoxHint extends Hint {
                 <span class="approval-span-btn" title="Я уверен(а), что этот ответ правильный">✔</span>
                 <span class="approval-span-btn" title="Я уверен(а), что этот ответ неправильный">❌</span>
             </div>
-            `
+            `;
         inputElements.insertAdjacentHTML('beforeend', buttonsHtml);
         let clickElements = inputElements.querySelectorAll('.approval-span-btn');
 
@@ -82,7 +83,7 @@ export default class CheckBoxHint extends Hint {
                     answer: _this._callBackGetAnswer(),
                     question: _this._callBackGetQuestion(),
                     buttonValue: undefined
-                }
+                };
 
                 if (this.textContent === '✔') {
                     message.buttonValue = true;
@@ -91,7 +92,7 @@ export default class CheckBoxHint extends Hint {
                 }
 
                 _this.callBackPressApprovalButton(message);
-            })
+            });
         }
     }
 

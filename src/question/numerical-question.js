@@ -1,5 +1,5 @@
-import Question from "./question";
-import TextHint from "./hint/text-hint";
+import Question from './question';
+import TextHint from './hint/text-hint';
 
 /**
  * @extends Question

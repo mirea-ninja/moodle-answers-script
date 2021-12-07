@@ -17,6 +17,7 @@ export default class Client {
     callBackArrayUpdateViewersCounter = [];
 
     constructor(url, user, room) {
+        // eslint-disable-next-line no-undef
         this._socket = io(url, {transports: ['websocket', 'polling', 'flashsocket']});
 
         /**
@@ -64,7 +65,7 @@ export default class Client {
                     let questionViewerInfo = {
                         question: questionsInfo['data'][i]['question'],
                         viewers: questionsInfo['data'][i]['viewers'].length
-                    }
+                    };
                     callBackUpdateViewersCounter(questionViewerInfo);
                 }
             }
@@ -106,7 +107,7 @@ export default class Client {
     }
 
 
-    RegisterAddChatMessagesListener(question) {
+    RegisterAddChatMessagesListener() {
         // событие вызывается при получении нового сообщения в чате
 
         this._socket.on('add_chat_messages', (messages) => {

@@ -1,5 +1,5 @@
-import Question from "./question";
-import CheckBoxHint from "./hint/check-box-hint";
+import Question from './question';
+import CheckBoxHint from './hint/check-box-hint';
 
 /**
  * @extends Question

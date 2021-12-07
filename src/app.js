@@ -1,12 +1,12 @@
-import User from "./messenger/user";
-import Chat from "./messenger/chat";
-import Client from "./network/client";
-import ShortAnswerQuestion from "./question/short-answer-question";
-import TrueFalseQuestion from "./question/true-false-question";
-import MultiChoiceCheckBoxQuestion from "./question/multi-choice-check-box-question";
-import MultiChoiceQuestion from "./question/multi-choice-question";
-import NumericalQuestion from "./question/numerical-question";
-import MatchQuestion from "./question/match-question";
+import User from './messenger/user';
+import Chat from './messenger/chat';
+import Client from './network/client';
+import ShortAnswerQuestion from './question/short-answer-question';
+import TrueFalseQuestion from './question/true-false-question';
+import MultiChoiceCheckBoxQuestion from './question/multi-choice-check-box-question';
+import MultiChoiceQuestion from './question/multi-choice-question';
+import NumericalQuestion from './question/numerical-question';
+import MatchQuestion from './question/match-question';
 
 export default class App {
     /**
@@ -32,7 +32,7 @@ export default class App {
 
     get Questions() {
         return this._questions;
-    };
+    }
 
     /**
      * @param {HTMLElement} questionBlock
@@ -53,26 +53,25 @@ export default class App {
                 const domQuestionBlock = questionBlock.querySelector('.qtext');
                 const domAnswerBlock = questionBlock.querySelector('.answer');
                 switch (questionType) {
-                    case 'shortanswer':
-                        question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'truefalse':
-                        question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'multichoice':
-                        let isCheckBox = domAnswerBlock.querySelector('input[type=checkbox]') !== null;
-                        if (isCheckBox) {
-                            question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
-                        } else {
-                            question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
-                        }
-                        break;
-                    case 'numerical':
-                        question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'match':
-                        question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
+                case 'shortanswer':
+                    question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'truefalse':
+                    question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'multichoice':
+                    if (domAnswerBlock.querySelector('input[type=checkbox]') !== null) {
+                        question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
+                    } else {
+                        question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                    }
+                    break;
+                case 'numerical':
+                    question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'match':
+                    question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
                 }
                 return question;
             }
@@ -94,13 +93,13 @@ export default class App {
     }
 
     IsProtectedPage() {
-        return document.body.classList.contains("quiz-secure-window");
+        return document.body.classList.contains('quiz-secure-window');
     }
 
     DisableProtectedPageRestrictions() {
-        window.addEventListener("mousedown", event => event.stopPropagation(), true);
-        window.addEventListener("dragstart", event => event.stopPropagation(), true);
-        window.addEventListener("contextmenu", event => event.stopPropagation(), true);
+        window.addEventListener('mousedown', event => event.stopPropagation(), true);
+        window.addEventListener('dragstart', event => event.stopPropagation(), true);
+        window.addEventListener('contextmenu', event => event.stopPropagation(), true);
         window.addEventListener('copy', event => event.stopPropagation(), true);
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
@@ -109,13 +108,14 @@ export default class App {
         this._user = new User();
         this._chat = new Chat();
 
-        this._user.UserId = this.UserId
+        this._user.UserId = this.UserId;
         this._chat.CreateChat();
 
         if (this.IsProtectedPage()) {
             this.DisableProtectedPageRestrictions();
         }
 
+        // eslint-disable-next-line no-undef
         const room = CryptoJS.SHA256(this.Questions[0].TextQuestion).toString();
         this._client = new Client('https://mirea.ninja:5000/', this._user, room);
 

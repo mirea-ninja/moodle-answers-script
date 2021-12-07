@@ -175,7 +175,7 @@ export default class Chat {
                 }
                 .another-chat-message{
                     float:left;
-                }`
+                }`;
 
     /**
      * @protected
@@ -235,6 +235,7 @@ export default class Chat {
         // Add html chat code in page
         document.body.insertAdjacentHTML('beforeend', this._codeHTML);
         // Add css chat code in page
+        // eslint-disable-next-line no-undef
         GM_addStyle(this._codeCSS);
 
         this._domChatBlock = document.body.querySelector('[id=chat-block]');
