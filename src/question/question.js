@@ -1,4 +1,4 @@
-import Image from "./image";
+import Image from './image';
 
 /**
  * @abstract
@@ -66,17 +66,17 @@ export default class Question {
      * @return {NodeListOf<Element>}
      * @abstract
      */
-    get OptionsAnswer() {
-
+    get OptionsAnswer(){
+        return undefined;
     }
 
     /**
      * @return {string[]}
      * @abstract
      */
-    get Answers() {
-
-    };
+    get Answers(){
+        return undefined;
+    }
 
     /**
      * @return {string}
@@ -92,7 +92,7 @@ export default class Question {
             if (imgData.length === 0) {
                 console.error('Image not loaded, perhaps the question will not be identified correctly.');
             }
-            text += " img:" + imgData;
+            text += ' img:' + imgData;
         }
 
         return text;
@@ -122,7 +122,9 @@ export default class Question {
 
     /**
      * @abstract
+     * @param {Element} inputElement
      */
+    // eslint-disable-next-line no-unused-vars
     GetAnswerByInput(inputElement) {
 
     }
@@ -140,7 +142,7 @@ export default class Question {
                     text: _this.TextQuestion,
                     type: _this.Type,
                     answers: _this.Answers,
-                }
+                };
                 if (_this.callBackAnswerChange) {
                     _this.callBackAnswerChange(newAnswerData);
                 }
@@ -172,7 +174,7 @@ export default class Question {
              * @type {Hint}
              */
             let hint = new this._protoHint(optionAnswer, () => {
-                return this.GetAnswerByInput(optionAnswer)
+                return this.GetAnswerByInput(optionAnswer);
             }, () => {
                 return this.TextQuestion;
             });

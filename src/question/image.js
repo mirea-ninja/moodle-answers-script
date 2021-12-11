@@ -22,13 +22,13 @@ export default class Image {
             console.error('Image not loaded, failed to get Base64.');
             return '';
         }
-        let canvas = document.createElement("canvas");
+        let canvas = document.createElement('canvas');
         canvas.width = this._imgElement.naturalWidth;
         canvas.height = this._imgElement.naturalHeight;
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext('2d');
         ctx.drawImage(this._imgElement, 0, 0);
-        let dataURL = canvas.toDataURL("image/png");
-        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        let dataURL = canvas.toDataURL('image/png');
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 
     /**
@@ -39,6 +39,7 @@ export default class Image {
             console.error('Image not loaded, failed to get SHA256.');
             return '';
         }
+        // eslint-disable-next-line no-undef
         return CryptoJS.SHA256(this.Base64).toString();
     }
 }

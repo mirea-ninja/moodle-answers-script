@@ -1,5 +1,5 @@
-import Question from "./question";
-import TextHint from "./hint/text-hint";
+import Question from './question';
+import TextHint from './hint/text-hint';
 
 /**
  * @extends Question
@@ -43,10 +43,10 @@ export default class MatchQuestion extends Question {
 
         let optionsAnswer = this.OptionsAnswer;
         for (let i = 0; i < optionsAnswer.length; i++) {
-            let optionAnswers = []
+            let optionAnswers = [];
             for (const userAnswer of answers) {
                 if (userAnswer['subquestion'] === this.GetAnswerByInput(optionsAnswer[i])) {
-                    optionAnswers.push(userAnswer)
+                    optionAnswers.push(userAnswer);
                 }
             }
             this._hints[i].HintInfo = optionAnswers;

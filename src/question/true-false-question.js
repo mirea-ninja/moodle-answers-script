@@ -1,4 +1,4 @@
-import MultiChoiceQuestion from "./multi-choice-question";
+import MultiChoiceQuestion from './multi-choice-question';
 
 /**
  * @extends MultiChoiceQuestion
