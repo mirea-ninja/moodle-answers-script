@@ -1280,7 +1280,7 @@ class App {
         let questionTypes = ['shortanswer', // вписать короткий ответ
             'truefalse', // вопрос на верно/неверно
             'numerical', // коротки ответ в виде числа
-            'multichoice', // вопрос с множе1ственными вариантами ответов
+            'multichoice', // вопрос с множественными вариантами ответов
             'match' // вопрос на соответствие
         ];
         let question = undefined;
@@ -1404,7 +1404,7 @@ class App {
             question.callBackAnswerChange = (newAnswerData) => {
                 this._client.SendNewAnswerToQuestion(newAnswerData);
             };
-                        
+
             question.CallBackApprovalButton = (message) => {
                 this._client.SendNewApprovalAnswers(message);
             };
