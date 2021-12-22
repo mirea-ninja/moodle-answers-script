@@ -4,7 +4,7 @@
 // @namespace   https://mirea.ninja/
 // @version     2.1.0
 // @description online test answers!
-// @author      admin and SyntOwl
+// @author      SyntOwl and Oniel
 // @match       *://online-edu.mirea.ru/*
 // @match       *://oniel.beget.tech/*
 // @updateURL   https://raw.githubusercontent.com/Ninja-Official/moodle-answers-script/main/answers-script.meta.js
@@ -249,7 +249,7 @@ class Chat {
                 }
                 .another-chat-message{
                     float:left;
-                }`
+                }`;
 
     /**
      * @protected
@@ -309,6 +309,7 @@ class Chat {
         // Add html chat code in page
         document.body.insertAdjacentHTML('beforeend', this._codeHTML);
         // Add css chat code in page
+        // eslint-disable-next-line no-undef
         GM_addStyle(this._codeCSS);
 
         this._domChatBlock = document.body.querySelector('[id=chat-block]');
@@ -360,6 +361,7 @@ class Client {
     callBackArrayUpdateViewersCounter = [];
 
     constructor(url, user, room) {
+        // eslint-disable-next-line no-undef
         this._socket = io(url, {transports: ['websocket', 'polling', 'flashsocket']});
 
         /**
@@ -449,7 +451,7 @@ class Client {
     }
 
 
-    RegisterAddChatMessagesListener(question) {
+    RegisterAddChatMessagesListener() {
         // событие вызывается при получении нового сообщения в чате
 
         this._socket.on('add_chat_messages', (messages) => {
@@ -544,13 +546,13 @@ class Image {
             console.error('Image not loaded, failed to get Base64.');
             return '';
         }
-        let canvas = document.createElement("canvas");
+        let canvas = document.createElement('canvas');
         canvas.width = this._imgElement.naturalWidth;
         canvas.height = this._imgElement.naturalHeight;
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext('2d');
         ctx.drawImage(this._imgElement, 0, 0);
-        let dataURL = canvas.toDataURL("image/png");
-        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        let dataURL = canvas.toDataURL('image/png');
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 
     /**
@@ -561,6 +563,7 @@ class Image {
             console.error('Image not loaded, failed to get SHA256.');
             return '';
         }
+        // eslint-disable-next-line no-undef
         return CryptoJS.SHA256(this.Base64).toString();
     }
 }
@@ -631,17 +634,17 @@ class Question {
      * @return {NodeListOf<Element>}
      * @abstract
      */
-    get OptionsAnswer() {
-
+    get OptionsAnswer(){
+        return undefined;
     }
 
     /**
      * @return {string[]}
      * @abstract
      */
-    get Answers() {
-
-    };
+    get Answers(){
+        return undefined;
+    }
 
     /**
      * @return {string}
@@ -657,7 +660,7 @@ class Question {
             if (imgData.length === 0) {
                 console.error('Image not loaded, perhaps the question will not be identified correctly.');
             }
-            text += " img:" + imgData;
+            text += ' img:' + imgData;
         }
 
         return text;
@@ -687,7 +690,9 @@ class Question {
 
     /**
      * @abstract
+     * @param {Element} inputElement
      */
+    // eslint-disable-next-line no-unused-vars
     GetAnswerByInput(inputElement) {
 
     }
@@ -737,7 +742,7 @@ class Question {
              * @type {Hint}
              */
             let hint = new this._protoHint(optionAnswer, () => {
-                return this.GetAnswerByInput(optionAnswer)
+                return this.GetAnswerByInput(optionAnswer);
             }, () => {
                 return this.TextQuestion;
             });
@@ -934,6 +939,7 @@ class CheckBoxHint extends Hint {
               }
             `;
 
+        // eslint-disable-next-line no-undef
         GM_addStyle(buttonsCss);
 
         let inputElements = this._domHintBlock;
@@ -1259,9 +1265,11 @@ class App {
      */
     _client = undefined;
 
+    _isDisplayed = true;
+
     get Questions() {
         return this._questions;
-    };
+    }
 
     /**
      * @param {HTMLElement} questionBlock
@@ -1270,9 +1278,9 @@ class App {
      */
     GetQuestion(questionBlock) {
         let questionTypes = ['shortanswer', // вписать короткий ответ
-            'truefalse',    // вопрос на верно/неверно
-            'numerical',    // коротки ответ в виде числа
-            'multichoice',  // вопрос с множественными вариантами ответов
+            'truefalse', // вопрос на верно/неверно
+            'numerical', // коротки ответ в виде числа
+            'multichoice', // вопрос с множественными вариантами ответов
             'match' // вопрос на соответствие
         ];
         let question = undefined;
@@ -1282,26 +1290,25 @@ class App {
                 const domQuestionBlock = questionBlock.querySelector('.qtext');
                 const domAnswerBlock = questionBlock.querySelector('.answer');
                 switch (questionType) {
-                    case 'shortanswer':
-                        question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'truefalse':
-                        question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'multichoice':
-                        let isCheckBox = domAnswerBlock.querySelector('input[type=checkbox]') !== null;
-                        if (isCheckBox) {
-                            question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
-                        } else {
-                            question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
-                        }
-                        break;
-                    case 'numerical':
-                        question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'match':
-                        question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
+                case 'shortanswer':
+                    question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'truefalse':
+                    question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'multichoice':
+                    if (domAnswerBlock.querySelector('input[type=checkbox]') !== null) {
+                        question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
+                    } else {
+                        question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                    }
+                    break;
+                case 'numerical':
+                    question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'match':
+                    question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
                 }
                 return question;
             }
@@ -1323,15 +1330,35 @@ class App {
     }
 
     IsProtectedPage() {
-        return document.body.classList.contains("quiz-secure-window");
+        return document.body.classList.contains('quiz-secure-window');
     }
 
     DisableProtectedPageRestrictions() {
-        window.addEventListener("mousedown", event => event.stopPropagation(), true);
-        window.addEventListener("dragstart", event => event.stopPropagation(), true);
-        window.addEventListener("contextmenu", event => event.stopPropagation(), true);
+        window.addEventListener('mousedown', event => event.stopPropagation(), true);
+        window.addEventListener('dragstart', event => event.stopPropagation(), true);
+        window.addEventListener('contextmenu', event => event.stopPropagation(), true);
         window.addEventListener('copy', event => event.stopPropagation(), true);
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
+    }
+
+    SetDisplaying(display) {
+        for (const question of this.Questions) {
+            const answers = question._domAnswerBlock.querySelectorAll('.script-answers');
+            for (let i = 0; i < answers.length; i++) {
+                const ans = answers[i];
+                display ? ans.style.display = 'flex'
+                    : ans.style.display = 'none';
+                
+            }
+
+            const viewersBlock = question._domHintViewersBlock.parentElement;
+            display ? viewersBlock.style.display = 'flex' 
+                : viewersBlock.style.display = 'none';
+            
+        }
+
+        display ? this._chat._domChatBlock.style.display = 'block' 
+            : this._chat._domChatBlock.style.display = 'none';
     }
 
     Start() {
@@ -1345,6 +1372,7 @@ class App {
             this.DisableProtectedPageRestrictions();
         }
 
+        // eslint-disable-next-line no-undef
         const room = CryptoJS.SHA256(this.Questions[0].TextQuestion).toString();
         this._client = new Client('https://mirea.ninja:5000/', this._user, room);
 
@@ -1366,7 +1394,7 @@ class App {
                     question.ViewerCounter = data['viewers'];
                 }
             });
-
+    
             this._client.callBackArrayUpdateAnswersInformation.push((data) => {
                 if (question.TextQuestion === data['question']) {
                     question.HintAnswers = data['answers'];
@@ -1381,14 +1409,57 @@ class App {
                 this._client.SendNewApprovalAnswers(message);
             };
         }
+
         this._client.RegisterUpdateAnswersListener();
         this._client.RegisterUpdateViewersListener();
+
+        document.body.onshortcut(['Control', 'Shift', 'H'], () => {
+            this._isDisplayed = !this._isDisplayed;
+            this.SetDisplaying(this._isDisplayed);
+        });
     }
 }
 
+/**
+ * Create keyboard hotkeys
+ * @param {Array} shortcut 
+ * @param {Function} handler 
+ */
+HTMLElement.prototype.onshortcut = function(shortcut, handler) {
+    var currentKeys = [];
+    
+    function reset() {
+        currentKeys = [];
+    }
+
+    function shortcutMatches() {
+        currentKeys.sort();
+        shortcut.sort();
+
+        return (
+            JSON.stringify(currentKeys) ==
+            JSON.stringify(shortcut)
+        );
+    }
+
+    this.onkeydown = function(ev) {
+        currentKeys.push(ev.key);
+
+        if (shortcutMatches()) {
+            ev.preventDefault();
+            reset();
+            handler(this);
+        }
+
+    };
+
+    this.onkeyup = reset;
+};
+
+
 let app;
 
-document.addEventListener("DOMContentLoaded", OnDOMReady);
+document.addEventListener('DOMContentLoaded', OnDOMReady);
 
 function OnDOMReady() {
     app = new App();
@@ -1397,18 +1468,19 @@ function OnDOMReady() {
     if (app.Questions.length === 0) {
         app = null;
     } else {
+        // eslint-disable-next-line no-undef
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {
                 app.UserId = result.visitorId;
                 switch (document.readyState) {
-                    case 'loading':
-                    case 'interactive':
-                        window.addEventListener('load', app.Start);
-                        break;
-                    case 'complete':
-                        app.Start();
-                        break;
+                case 'loading':
+                case 'interactive':
+                    window.addEventListener('load', app.Start);
+                    break;
+                case 'complete':
+                    app.Start();
+                    break;
                 }
             });
     }
