@@ -4,7 +4,7 @@
 // @namespace   https://mirea.ninja/
 // @version     2.1.0
 // @description online test answers!
-// @author      admin and SyntOwl
+// @author      SyntOwl and Oniel
 // @match       *://online-edu.mirea.ru/*
 // @match       *://oniel.beget.tech/*
 // @updateURL   https://raw.githubusercontent.com/Ninja-Official/moodle-answers-script/main/answers-script.meta.js
@@ -1265,6 +1265,8 @@ class App {
      */
     _client = undefined;
 
+    _isDisplayed = true;
+
     get Questions() {
         return this._questions;
     }
@@ -1276,9 +1278,9 @@ class App {
      */
     GetQuestion(questionBlock) {
         let questionTypes = ['shortanswer', // вписать короткий ответ
-            'truefalse',    // вопрос на верно/неверно
-            'numerical',    // коротки ответ в виде числа
-            'multichoice',  // вопрос с множественными вариантами ответов
+            'truefalse', // вопрос на верно/неверно
+            'numerical', // коротки ответ в виде числа
+            'multichoice', // вопрос с множественными вариантами ответов
             'match' // вопрос на соответствие
         ];
         let question = undefined;
@@ -1339,6 +1341,26 @@ class App {
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
 
+    SetDisplaying(display) {
+        for (const question of this.Questions) {
+            const answers = question._domAnswerBlock.querySelectorAll('.script-answers');
+            for (let i = 0; i < answers.length; i++) {
+                const ans = answers[i];
+                display ? ans.style.display = 'flex'
+                    : ans.style.display = 'none';
+                
+            }
+
+            const viewersBlock = question._domHintViewersBlock.parentElement;
+            display ? viewersBlock.style.display = 'flex' 
+                : viewersBlock.style.display = 'none';
+            
+        }
+
+        display ? this._chat._domChatBlock.style.display = 'block' 
+            : this._chat._domChatBlock.style.display = 'none';
+    }
+
     Start() {
         this._user = new User();
         this._chat = new Chat();
@@ -1372,7 +1394,7 @@ class App {
                     question.ViewerCounter = data['viewers'];
                 }
             });
-
+    
             this._client.callBackArrayUpdateAnswersInformation.push((data) => {
                 if (question.TextQuestion === data['question']) {
                     question.HintAnswers = data['answers'];
@@ -1387,10 +1409,53 @@ class App {
                 this._client.SendNewApprovalAnswers(message);
             };
         }
+
         this._client.RegisterUpdateAnswersListener();
         this._client.RegisterUpdateViewersListener();
+
+        document.body.onshortcut(['Control', 'Shift', 'H'], () => {
+            this._isDisplayed = !this._isDisplayed;
+            this.SetDisplaying(this._isDisplayed);
+        });
     }
 }
+
+/**
+ * Create keyboard hotkeys
+ * @param {Array} shortcut 
+ * @param {Function} handler 
+ */
+HTMLElement.prototype.onshortcut = function(shortcut, handler) {
+    var currentKeys = [];
+    
+    function reset() {
+        currentKeys = [];
+    }
+
+    function shortcutMatches() {
+        currentKeys.sort();
+        shortcut.sort();
+
+        return (
+            JSON.stringify(currentKeys) ==
+            JSON.stringify(shortcut)
+        );
+    }
+
+    this.onkeydown = function(ev) {
+        currentKeys.push(ev.key);
+
+        if (shortcutMatches()) {
+            ev.preventDefault();
+            reset();
+            handler(this);
+        }
+
+    };
+
+    this.onkeyup = reset;
+};
+
 
 let app;
 
