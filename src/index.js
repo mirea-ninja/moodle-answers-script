@@ -19,7 +19,9 @@ function OnDOMReady() {
                 switch (document.readyState) {
                 case 'loading':
                 case 'interactive':
-                    window.addEventListener('load', app.Start);
+                    window.addEventListener('load', function () {
+                        app.Start();
+                    });
                     break;
                 case 'complete':
                     app.Start();
