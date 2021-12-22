@@ -249,7 +249,7 @@ class Chat {
                 }
                 .another-chat-message{
                     float:left;
-                }`
+                }`;
 
     /**
      * @protected
@@ -309,6 +309,7 @@ class Chat {
         // Add html chat code in page
         document.body.insertAdjacentHTML('beforeend', this._codeHTML);
         // Add css chat code in page
+        // eslint-disable-next-line no-undef
         GM_addStyle(this._codeCSS);
 
         this._domChatBlock = document.body.querySelector('[id=chat-block]');
@@ -360,6 +361,7 @@ class Client {
     callBackArrayUpdateViewersCounter = [];
 
     constructor(url, user, room) {
+        // eslint-disable-next-line no-undef
         this._socket = io(url, {transports: ['websocket', 'polling', 'flashsocket']});
 
         /**
@@ -449,7 +451,7 @@ class Client {
     }
 
 
-    RegisterAddChatMessagesListener(question) {
+    RegisterAddChatMessagesListener() {
         // событие вызывается при получении нового сообщения в чате
 
         this._socket.on('add_chat_messages', (messages) => {
@@ -544,13 +546,13 @@ class Image {
             console.error('Image not loaded, failed to get Base64.');
             return '';
         }
-        let canvas = document.createElement("canvas");
+        let canvas = document.createElement('canvas');
         canvas.width = this._imgElement.naturalWidth;
         canvas.height = this._imgElement.naturalHeight;
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext('2d');
         ctx.drawImage(this._imgElement, 0, 0);
-        let dataURL = canvas.toDataURL("image/png");
-        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        let dataURL = canvas.toDataURL('image/png');
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
     }
 
     /**
@@ -561,6 +563,7 @@ class Image {
             console.error('Image not loaded, failed to get SHA256.');
             return '';
         }
+        // eslint-disable-next-line no-undef
         return CryptoJS.SHA256(this.Base64).toString();
     }
 }
@@ -631,17 +634,17 @@ class Question {
      * @return {NodeListOf<Element>}
      * @abstract
      */
-    get OptionsAnswer() {
-
+    get OptionsAnswer(){
+        return undefined;
     }
 
     /**
      * @return {string[]}
      * @abstract
      */
-    get Answers() {
-
-    };
+    get Answers(){
+        return undefined;
+    }
 
     /**
      * @return {string}
@@ -657,7 +660,7 @@ class Question {
             if (imgData.length === 0) {
                 console.error('Image not loaded, perhaps the question will not be identified correctly.');
             }
-            text += " img:" + imgData;
+            text += ' img:' + imgData;
         }
 
         return text;
@@ -687,7 +690,9 @@ class Question {
 
     /**
      * @abstract
+     * @param {Element} inputElement
      */
+    // eslint-disable-next-line no-unused-vars
     GetAnswerByInput(inputElement) {
 
     }
@@ -737,7 +742,7 @@ class Question {
              * @type {Hint}
              */
             let hint = new this._protoHint(optionAnswer, () => {
-                return this.GetAnswerByInput(optionAnswer)
+                return this.GetAnswerByInput(optionAnswer);
             }, () => {
                 return this.TextQuestion;
             });
@@ -934,6 +939,7 @@ class CheckBoxHint extends Hint {
               }
             `;
 
+        // eslint-disable-next-line no-undef
         GM_addStyle(buttonsCss);
 
         let inputElements = this._domHintBlock;
@@ -1261,7 +1267,7 @@ class App {
 
     get Questions() {
         return this._questions;
-    };
+    }
 
     /**
      * @param {HTMLElement} questionBlock
@@ -1282,26 +1288,25 @@ class App {
                 const domQuestionBlock = questionBlock.querySelector('.qtext');
                 const domAnswerBlock = questionBlock.querySelector('.answer');
                 switch (questionType) {
-                    case 'shortanswer':
-                        question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'truefalse':
-                        question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'multichoice':
-                        let isCheckBox = domAnswerBlock.querySelector('input[type=checkbox]') !== null;
-                        if (isCheckBox) {
-                            question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
-                        } else {
-                            question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
-                        }
-                        break;
-                    case 'numerical':
-                        question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
-                    case 'match':
-                        question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
-                        break;
+                case 'shortanswer':
+                    question = new ShortAnswerQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'truefalse':
+                    question = new TrueFalseQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'multichoice':
+                    if (domAnswerBlock.querySelector('input[type=checkbox]') !== null) {
+                        question = new MultiChoiceCheckBoxQuestion(domQuestionBlock, domAnswerBlock);
+                    } else {
+                        question = new MultiChoiceQuestion(domQuestionBlock, domAnswerBlock);
+                    }
+                    break;
+                case 'numerical':
+                    question = new NumericalQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
+                case 'match':
+                    question = new MatchQuestion(domQuestionBlock, domAnswerBlock);
+                    break;
                 }
                 return question;
             }
@@ -1323,13 +1328,13 @@ class App {
     }
 
     IsProtectedPage() {
-        return document.body.classList.contains("quiz-secure-window");
+        return document.body.classList.contains('quiz-secure-window');
     }
 
     DisableProtectedPageRestrictions() {
-        window.addEventListener("mousedown", event => event.stopPropagation(), true);
-        window.addEventListener("dragstart", event => event.stopPropagation(), true);
-        window.addEventListener("contextmenu", event => event.stopPropagation(), true);
+        window.addEventListener('mousedown', event => event.stopPropagation(), true);
+        window.addEventListener('dragstart', event => event.stopPropagation(), true);
+        window.addEventListener('contextmenu', event => event.stopPropagation(), true);
         window.addEventListener('copy', event => event.stopPropagation(), true);
         window.addEventListener('beforeprint', event => event.stopPropagation(), true);
     }
@@ -1345,6 +1350,7 @@ class App {
             this.DisableProtectedPageRestrictions();
         }
 
+        // eslint-disable-next-line no-undef
         const room = CryptoJS.SHA256(this.Questions[0].TextQuestion).toString();
         this._client = new Client('https://mirea.ninja:5000/', this._user, room);
 
@@ -1388,7 +1394,7 @@ class App {
 
 let app;
 
-document.addEventListener("DOMContentLoaded", OnDOMReady);
+document.addEventListener('DOMContentLoaded', OnDOMReady);
 
 function OnDOMReady() {
     app = new App();
@@ -1397,18 +1403,21 @@ function OnDOMReady() {
     if (app.Questions.length === 0) {
         app = null;
     } else {
+        // eslint-disable-next-line no-undef
         FingerprintJS.load()
             .then(fp => fp.get())
             .then(result => {
                 app.UserId = result.visitorId;
                 switch (document.readyState) {
-                    case 'loading':
-                    case 'interactive':
-                        window.addEventListener('load', app.Start);
-                        break;
-                    case 'complete':
+                case 'loading':
+                case 'interactive':
+                    window.addEventListener('load', function () {
                         app.Start();
-                        break;
+                    });
+                    break;
+                case 'complete':
+                    app.Start();
+                    break;
                 }
             });
     }
