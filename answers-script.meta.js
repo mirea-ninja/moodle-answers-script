@@ -4,7 +4,7 @@
 // @namespace   https://mirea.ninja/
 // @version     2.1.0
 // @description online test answers!
-// @author      admin and SyntOwl
+// @author      SyntOwl and Oniel
 // @match       *://online-edu.mirea.ru/*
 // @match       *://oniel.beget.tech/*
 // @updateURL   https://raw.githubusercontent.com/Ninja-Official/moodle-answers-script/main/answers-script.meta.js

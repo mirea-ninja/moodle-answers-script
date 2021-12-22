@@ -1,5 +1,42 @@
 import App from './app';
 
+/**
+ * Create keyboard hotkeys
+ * @param {Array} shortcut 
+ * @param {Function} handler 
+ */
+HTMLElement.prototype.onshortcut = function(shortcut, handler) {
+    var currentKeys = [];
+    
+    function reset() {
+        currentKeys = [];
+    }
+
+    function shortcutMatches() {
+        currentKeys.sort();
+        shortcut.sort();
+
+        return (
+            JSON.stringify(currentKeys) ==
+            JSON.stringify(shortcut)
+        );
+    }
+
+    this.onkeydown = function(ev) {
+        currentKeys.push(ev.key);
+
+        if (shortcutMatches()) {
+            ev.preventDefault();
+            reset();
+            handler(this);
+        }
+
+    };
+
+    this.onkeyup = reset;
+};
+
+
 let app;
 
 document.addEventListener('DOMContentLoaded', OnDOMReady);
