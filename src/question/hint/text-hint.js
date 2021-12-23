@@ -29,7 +29,7 @@ export default class TextHint extends Hint {
      */
     CreateHintDomBlock() {
         let answerParentBlock = this._domAnswerBlock.parentNode;
-        const hintHtml = '<div class="script-answers" style="color: red;' +
+        const hintHtml = '<div class="script-answers" style="color: red; display: none;' +
             ' padding-left: 5px; position: relative; background: rgb(0 0 0 / 6%);' +
             ' border-radius: 4px;">';
         answerParentBlock.insertAdjacentHTML('beforeend', hintHtml);

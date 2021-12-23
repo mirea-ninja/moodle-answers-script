@@ -80,7 +80,7 @@ class Chat {
      * @const
      */
     _codeHTML = `
-            <div id="chat-block">
+            <div id="chat-block" style="display: none;">
                 <input type="checkbox" id="chat-button" aria-hidden="true">
                 <div class="chat-nav">
                     <label for="chat-button" class="chat-button" onclick></label>
@@ -723,7 +723,7 @@ class Question {
      */
     CreateViewersInformation() {
         let answerParentBlock = this._domAnswerBlock.parentNode;
-        let viewersHtml = '<div class="script-answer-viewers" style="color: red;' +
+        let viewersHtml = '<div class="script-answer-viewers" style="color: red; display: none;' +
             ' padding-left: 5px; position: relative; background: rgb(0 0 0 / 6%);' +
             ' border-radius: 4px;">Просмотров со скриптом:' +
             ' <div class="script-answer-viewers-counter" style="display: contents;">??</div>' +
@@ -830,7 +830,7 @@ class TextHint extends Hint {
      */
     CreateHintDomBlock() {
         let answerParentBlock = this._domAnswerBlock.parentNode;
-        const hintHtml = '<div class="script-answers" style="color: red;' +
+        const hintHtml = '<div class="script-answers" style="color: red; display: none;' +
             ' padding-left: 5px; position: relative; background: rgb(0 0 0 / 6%);' +
             ' border-radius: 4px;">';
         answerParentBlock.insertAdjacentHTML('beforeend', hintHtml);
@@ -910,7 +910,7 @@ class CheckBoxHint extends Hint {
     CreateHintDomBlock() {
         let answerParentBlock = this._domAnswerBlock.parentNode;
         let hintHtml = `
-                    <div class="script-answers" style="padding-left: 5px; position: relative; display: inline-flex; background: rgb(0 0 (0 / 6%)); border-radius: 4px; font-size: 15px; max-height: 25px;">
+                    <div class="script-answers" style="padding-left: 5px; position: relative; display: none; background: rgb(0 0 (0 / 6%)); border-radius: 4px; font-size: 15px; max-height: 25px;">
                         ответы: <span title="Выбрали этот ответ" style="margin: 0px 5px;">0</span> | <span style="color: green; margin: 0px 5px;" title="Уверены, что этот ответ правильный">0</span> | <span style="color: red; margin: 0px 5px;" title="Уверены, что этот ответ неправильный">0</span>
                     </div>`;
         answerParentBlock.insertAdjacentHTML('beforeend', hintHtml);
@@ -1265,7 +1265,7 @@ class App {
      */
     _client = undefined;
 
-    _isDisplayed = true;
+    _isDisplayed = false;
 
     get Questions() {
         return this._questions;

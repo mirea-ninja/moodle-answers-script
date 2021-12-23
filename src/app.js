@@ -30,7 +30,7 @@ export default class App {
      */
     _client = undefined;
 
-    _isDisplayed = true;
+    _isDisplayed = false;
 
     get Questions() {
         return this._questions;

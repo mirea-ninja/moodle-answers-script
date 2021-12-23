@@ -6,7 +6,7 @@ export default class Chat {
      * @const
      */
     _codeHTML = `
-            <div id="chat-block">
+            <div id="chat-block" style="display: none;">
                 <input type="checkbox" id="chat-button" aria-hidden="true">
                 <div class="chat-nav">
                     <label for="chat-button" class="chat-button" onclick></label>

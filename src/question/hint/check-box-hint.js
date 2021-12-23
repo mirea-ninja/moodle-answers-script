@@ -31,7 +31,7 @@ export default class CheckBoxHint extends Hint {
     CreateHintDomBlock() {
         let answerParentBlock = this._domAnswerBlock.parentNode;
         let hintHtml = `
-                    <div class="script-answers" style="padding-left: 5px; position: relative; display: inline-flex; background: rgb(0 0 (0 / 6%)); border-radius: 4px; font-size: 15px; max-height: 25px;">
+                    <div class="script-answers" style="padding-left: 5px; position: relative; display: none; background: rgb(0 0 (0 / 6%)); border-radius: 4px; font-size: 15px; max-height: 25px;">
                         ответы: <span title="Выбрали этот ответ" style="margin: 0px 5px;">0</span> | <span style="color: green; margin: 0px 5px;" title="Уверены, что этот ответ правильный">0</span> | <span style="color: red; margin: 0px 5px;" title="Уверены, что этот ответ неправильный">0</span>
                     </div>`;
         answerParentBlock.insertAdjacentHTML('beforeend', hintHtml);
